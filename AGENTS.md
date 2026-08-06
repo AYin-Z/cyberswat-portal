@@ -10,6 +10,13 @@
 - 友情链接：0psu3.team（CTF 部门战队 Opsu3）
 - 端口约定：dev 5174（本地）
 
+## 架构设想（2026-08-06 用户口述，待细化）
+- **主站 cyberswat.cn**：资讯 + 往期风采 + 社团介绍（主页聚合）
+- **部门子域名**：每个部门独立子站（如 attack.cyberswat.cn），各部门自己提 PRD，我们实现
+  - 部门 slug 参考 src/data/team.ts 的 departments（attack-defense/forensics/modeling/algorithm/big-data/development/ai/publicity）
+  - 子域名命名待定：建议短 slug（attack/forensics/modeling/algorithm/bigdata/dev/ai/pr）
+  - 部署形态待定：nginx 多子站 or 单站多路由（取决于各部门 PRD 的差异度）
+
 ## 架构
 ```
 cyberswat.cn (Vue3 SPA)
@@ -27,6 +34,12 @@ cyberswat.cn (Vue3 SPA)
 ## 已验证
 - `pnpm build`（vue-tsc + vite build）✅ 39 modules, 374ms
 - `vite dev :5174` ✅ HTTP 200
+
+## 内容源（已归档）
+- docs/team-report-2025.md — 2025 年度报告（公大团宣）
+- docs/report-2024.md — 2024 年度报告（公大团宣）
+- docs/showcase-2023-2024.md — 2023-2024 风采展示（公大团宣，含干部/成员/历史荣誉）
+- src/data/team.ts — 结构化数据：departments（8部门）/ awards（2023-2025 荣誉墙）/ friendLinks
 
 ## 待办
 - [ ] 页面信息架构 / PRD（首页、队伍介绍、部门、荣誉、招新等）
