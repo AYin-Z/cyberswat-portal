@@ -24,6 +24,7 @@ const stats = [
     <section class="hero">
       <div class="hero-grid"></div>
       <div class="container hero-inner">
+        <img src="/logo.png" alt="CyberSWAT 队徽" class="hero-logo" v-reveal />
         <p class="hero-eyebrow" v-reveal>CYBERSWAT · PPSUC</p>
         <h1 class="hero-title" v-reveal>
           <span class="title-cn">赛博蓝盾</span>
@@ -133,6 +134,14 @@ const stats = [
 .hero-inner {
   position: relative;
   text-align: center;
+}
+
+.hero-logo {
+  width: 88px;
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 0 24px rgba(59, 130, 246, 0.35));
 }
 
 .hero-eyebrow {

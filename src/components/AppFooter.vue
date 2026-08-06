@@ -6,8 +6,13 @@ import { friendLinks } from '@/data/team'
   <footer class="footer">
     <div class="container footer-inner">
       <div class="col">
-        <p class="f-title">CyberSWAT</p>
-        <p class="f-sub">中国人民公安大学网络特警队</p>
+        <div class="f-brand">
+          <img src="/logo.png" alt="CyberSWAT 队徽" class="f-logo" />
+          <div>
+            <p class="f-title">CyberSWAT</p>
+            <p class="f-sub">中国人民公安大学网络特警队</p>
+          </div>
+        </div>
         <p class="f-dim">政治建警 · 科技兴警</p>
       </div>
 
@@ -50,7 +55,21 @@ import { friendLinks } from '@/data/team'
   font-size: 13px;
   letter-spacing: 0.1em;
   color: var(--text);
-  margin-bottom: 10px;
+  margin-bottom: 4px;
+}
+
+.f-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.f-logo {
+  width: 40px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.25));
 }
 
 .f-sub {

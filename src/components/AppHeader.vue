@@ -25,7 +25,7 @@ const nav = [
   <header class="nav" :class="{ scrolled }">
     <div class="container nav-inner">
       <RouterLink to="/" class="brand">
-        <span class="brand-mark">⬡</span>
+        <img src="/logo.png" alt="CyberSWAT 队徽" class="brand-mark" />
         <span class="brand-text">
           <strong>CyberSWAT</strong>
           <em>网络特警队</em>
@@ -74,9 +74,10 @@ const nav = [
 }
 
 .brand-mark {
-  font-size: 20px;
-  color: var(--accent-bright);
-  text-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+  width: 26px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.25));
 }
 
 .brand-text {
