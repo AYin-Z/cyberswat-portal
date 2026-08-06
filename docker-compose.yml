@@ -1,0 +1,14 @@
+# CyberSWAT 门户 — 容器编排
+# 主站 + 8 部门子站（子站就绪后逐个添加）
+# 端口规划：主站 8091；子站 8092-8099 预留
+# 对外暴露：CF Tunnel ingress → localhost:8091（不经过系统 nginx）
+
+services:
+  cyberswat-main:
+    build: .
+    image: cyberswat-main:latest
+    container_name: cyberswat-main
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8091:80"
+    # 只绑本机回环 — CF Tunnel 本地连接，公网不直开
