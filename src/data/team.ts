@@ -1,0 +1,106 @@
+// 网络特警队内容数据 — 来源：公大团宣年度报告 (docs/team-report-2025.md)
+// 注意：门户转载需标注来源"公大团宣/团委"
+
+export interface Department {
+  slug: string
+  name: string
+  en: string
+  desc: string
+  teams?: string[]
+}
+
+export interface Award {
+  id: number
+  dept: string
+  event: string
+  result: string
+  level: 'national' | 'provincial' | 'international' | 'industry'
+  year: number
+}
+
+// 八大部门
+export const departments: Department[] = [
+  {
+    slug: 'attack-defense',
+    name: '攻防部门',
+    en: 'Attack & Defense',
+    desc: '聚焦网络攻防实战与 CTF 竞赛，旗下 0psu3 战队足迹遍布全国，WMCTF 2025 全球第三。',
+    teams: ['0psu3'],
+  },
+  {
+    slug: 'forensics',
+    name: '取证部门',
+    en: 'Digital Forensics',
+    desc: '坚持"以赛促练、以赛促学"，聚焦电子数据取证与分析，旗下 406取证人 团队勇夺盘古石杯总冠军。',
+    teams: ['406取证人'],
+  },
+  {
+    slug: 'modeling',
+    name: '建模部门',
+    en: 'Mathematical Modeling',
+    desc: '数学建模竞赛主力，2025 美赛国际一等奖，覆盖数学应用与大数据建模。',
+  },
+  {
+    slug: 'algorithm',
+    name: '算法部门',
+    en: 'Algorithm',
+    desc: '算法竞赛与程序设计，蓝桥杯、百度之星、计算机博弈锦标赛等赛事主力。',
+  },
+  {
+    slug: 'big-data',
+    name: '大数据部门',
+    en: 'Big Data',
+    desc: '大数据技能与数据警务，全国公安系统最专业大数据赛事"智警杯"主力。',
+  },
+  {
+    slug: 'development',
+    name: '开发部门',
+    en: 'Development',
+    desc: '校园平台与工程化开发，主导院内算法平台、成果平台等项目。',
+  },
+  {
+    slug: 'ai',
+    name: '人工智能部门',
+    en: 'Artificial Intelligence',
+    desc: 'AI 技术研究与落地实践，探索人工智能在警务场景的应用。',
+  },
+  {
+    slug: 'publicity',
+    name: '宣传办公室',
+    en: 'Publicity Office',
+    desc: '队伍品牌建设与对外宣传，运营年度报告等队伍内容。',
+  },
+]
+
+// 2025 荣誉墙（节选重点）
+export const awards: Award[] = [
+  { id: 1, dept: 'attack-defense', event: 'WMCTF 2025 国际赛', result: '全球第三', level: 'international', year: 2025 },
+  { id: 2, dept: 'attack-defense', event: '第十八届全国大学生信息安全竞赛', result: '一等奖 + 二等奖', level: 'national', year: 2025 },
+  { id: 3, dept: 'attack-defense', event: '全国大学生软件创新大赛（软件系统安全赛）', result: '一等奖', level: 'national', year: 2025 },
+  { id: 4, dept: 'attack-defense', event: 'DASCTF 2025 下半年赛', result: '冠军', level: 'industry', year: 2025 },
+  { id: 5, dept: 'attack-defense', event: '羊城杯网络安全大赛', result: '一等奖', level: 'provincial', year: 2025 },
+  { id: 6, dept: 'attack-defense', event: '第十届上海市大学生网络安全大赛', result: '一等奖 + 二等奖', level: 'provincial', year: 2025 },
+  { id: 7, dept: 'attack-defense', event: '华为杯第四届中国研究生网络安全创新大赛', result: '一等奖 + 三等奖', level: 'national', year: 2025 },
+  { id: 8, dept: 'attack-defense', event: '西湖论剑·杭州网络安全技能大赛', result: '三等奖', level: 'national', year: 2025 },
+  { id: 9, dept: 'attack-defense', event: '第三届京麒 CTF 挑战赛', result: '三等奖', level: 'industry', year: 2025 },
+  { id: 10, dept: 'forensics', event: '第三届"盘古石杯"国际电子数据取证大赛', result: '总冠军', level: 'international', year: 2025 },
+  { id: 11, dept: 'forensics', event: '"美亚杯"第十一届电子数据取证大赛', result: '冠军 + 一二三等奖多项', level: 'national', year: 2025 },
+  { id: 12, dept: 'forensics', event: '第二届"数证杯"电子数据取证分析大赛', result: '团体二三等奖 + 个人二等奖', level: 'national', year: 2025 },
+  { id: 13, dept: 'forensics', event: '第五届全国网络空间取证大赛 FIC', result: '二等奖 + 三等奖', level: 'national', year: 2025 },
+  { id: 14, dept: 'modeling', event: '2025 美国大学生数学建模竞赛', result: '国际一等奖', level: 'international', year: 2025 },
+  { id: 15, dept: 'modeling', event: 'MathorCup 数学应用挑战赛', result: '多个一二三等奖', level: 'national', year: 2025 },
+  { id: 16, dept: 'modeling', event: '全国大学生数学建模竞赛', result: '二等奖', level: 'national', year: 2025 },
+  { id: 17, dept: 'algorithm', event: '第十九届中国计算机博弈锦标赛', result: '亚军', level: 'national', year: 2025 },
+  { id: 18, dept: 'algorithm', event: '第十六届蓝桥杯', result: '多个一二三等奖', level: 'national', year: 2025 },
+  { id: 19, dept: 'algorithm', event: '第21届百度之星程序设计大赛', result: '省赛银奖', level: 'provincial', year: 2025 },
+  { id: 20, dept: 'big-data', event: '第七届"智警杯"大数据技能竞赛', result: '多个学生组一等奖、二等奖', level: 'industry', year: 2025 },
+]
+
+// 友情链接
+export const friendLinks = [
+  {
+    name: '0psu3',
+    desc: '网络特警队攻防战队 · CTF 校队',
+    url: 'https://0psu3.team',
+  },
+]
