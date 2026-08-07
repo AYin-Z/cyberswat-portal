@@ -5,12 +5,12 @@ const timeline = [
   {
     year: '2014',
     title: '前身成立',
-    desc: '信息网络安全学院院级社团「网络特警队」成立。',
+    desc: '院级社团「网络特警队」成立。',
   },
   {
     year: '2022.04',
     title: '队伍成立',
-    desc: '中国人民公安大学网络特警队正式成立，由校团委指导。',
+    desc: '网络特警队正式成立，由校团委指导。',
   },
   {
     year: '2023',
@@ -54,17 +54,16 @@ const principles = [
       <div class="container">
         <p class="eyebrow" v-reveal>ABOUT CYBERSWAT</p>
         <h1 class="title" v-reveal>社团介绍</h1>
-        <p class="sub" v-reveal>一支为网络空间安全而生的预备警官队伍</p>
+        <p class="sub" v-reveal>一支为网络空间安全而生的网安卫士队伍</p>
       </div>
     </section>
 
     <section class="intro container">
       <div class="intro-text" v-reveal>
         <p>
-          中国人民公安大学网络特警队（简称「网特」）成立于 <strong>2022 年 4 月</strong>，
-          前身为信息网络安全学院 2014 年成立的院级社团。队伍由
-          <strong>校团委指导</strong>，信息网络安全学院副院长
-          <strong>高见</strong>担任指导老师。
+          网络特警队（简称「网特」）成立于 <strong>2022 年 4 月</strong>，
+          前身为 2014 年成立的院级社团。队伍由
+          <strong>校团委指导</strong>，由学院指导老师带队。
         </p>
         <p>
           网特不仅是校园内的技术社团，更是面向网络安全实战的平台。队伍下设攻防、

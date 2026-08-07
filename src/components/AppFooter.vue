@@ -10,7 +10,7 @@ import { friendLinks } from '@/data/team'
           <img src="/logo.png" alt="CyberSWAT 队徽" class="f-logo" />
           <div>
             <p class="f-title">CyberSWAT</p>
-            <p class="f-sub">中国人民公安大学网络特警队</p>
+            <p class="f-sub">网络特警队</p>
           </div>
         </div>
         <p class="f-dim">政治建警 · 科技兴警</p>
@@ -25,14 +25,13 @@ import { friendLinks } from '@/data/team'
 
       <div class="col">
         <p class="f-title">联系</p>
-        <p class="f-dim">共青团中国人民公安大学委员会指导</p>
-        <p class="f-dim">信息网络安全学院</p>
+        <p class="f-dim">校团委指导</p>
       </div>
     </div>
 
     <div class="container footer-bottom">
       <span>© 2026 CyberSWAT · cyberswat.cn</span>
-      <span class="footer-source">内容来源：公大团宣</span>
+      <span class="footer-source">内容来源：校宣传部门</span>
     </div>
   </footer>
 </template>

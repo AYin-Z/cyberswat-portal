@@ -4,7 +4,7 @@
 > 原则：先完整性后取舍，构思全部记录，再逐条评审（可行性/优先级/依赖）
 
 ## 1. 定位
-中国人民公安大学网络特警队（CyberSWAT）官方门户。
+网络特警队（CyberSWAT）官方门户。
 
 ## 2. 现状（demo 已实现）
 - 主站：首页（Hero/数据/部门/荣誉精选/友链）、/about、/honors（38条筛选）、/departments、/departments/:slug 占位、/news 占位

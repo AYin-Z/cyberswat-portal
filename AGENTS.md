@@ -1,7 +1,7 @@
-# cyberswat-portal — 中国人民公安大学网络特警队门户
+# cyberswat-portal — CyberSWAT 网络特警队门户
 
 ## 项目身份
-中国人民公安大学网络特警队（CyberSWAT）官方门户网站。域名 **cyberswat.cn**（阿里云注册，DNS 托管已转 Cloudflare，免 ICP 备案）。
+网络特警队（CyberSWAT）官方门户网站。域名 **cyberswat.cn**（阿里云注册，DNS 托管已转 Cloudflare，免 ICP 备案）。
 
 ## 关键决策（2026-08-06 立项确认）
 - 技术栈：Vue3 + Vite + TS + Pinia + vue-router（与 ayin-portal 同栈，用户主力栈）
@@ -50,9 +50,9 @@
 - **CF token**：已有权限 = Tunnel:Edit + DNS:Edit + Zone:Edit（2026-08-06 用户加了 Zone:Edit），创建 zone 需要后者
 
 ## 内容源（已归档）
-- docs/team-report-2025.md — 2025 年度报告（公大团宣）
-- docs/report-2024.md — 2024 年度报告（公大团宣）
-- docs/showcase-2023-2024.md — 2023-2024 风采展示（公大团宣，含干部/成员/历史荣誉）
+- docs/team-report-2025.md — 2025 年度报告（校宣传部门）
+- docs/report-2024.md — 2024 年度报告（校宣传部门）
+- docs/showcase-2023-2024.md — 2023-2024 风采展示（校宣传部门，含干部/成员/历史荣誉）
 - src/data/team.ts — 结构化数据：departments（8部门）/ awards（2023-2025 荣誉墙）/ friendLinks
 
 ## 待办

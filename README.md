@@ -1,6 +1,6 @@
 # CyberSWAT Portal
 
-中国人民公安大学网络特警队（CyberSWAT）门户网站。
+网络特警队（CyberSWAT）门户网站。
 
 - 域名：cyberswat.cn
 - 技术栈：Vue3 + Vite + TypeScript + Pinia + Vue Router

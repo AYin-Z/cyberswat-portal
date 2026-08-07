@@ -1,5 +1,5 @@
-// 网络特警队内容数据 — 来源：公大团宣年度报告 (docs/team-report-2025.md)
-// 注意：门户转载需标注来源"公大团宣/团委"
+// 网络特警队内容数据 — 来源：校宣传部门年度报告 (docs/team-report-2025.md)
+// 注意：门户转载需标注来源"校宣传部门/团委"
 
 export interface Department {
   slug: string

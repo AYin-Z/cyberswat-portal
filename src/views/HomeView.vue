@@ -99,7 +99,7 @@ onUnmounted(() => clearInterval(timer))
   <div class="home">
     <!-- 系统状态条 -->
     <div class="topbar">
-      <span class="sys">CYBERSWAT // PPSUC</span>
+      <span class="sys">CYBERSWAT // NETSWAT</span>
       <span class="status-line"><span class="dot"></span>ALL SYSTEMS NOMINAL</span>
       <span class="time">{{ now }}</span>
     </div>
@@ -118,8 +118,8 @@ onUnmounted(() => clearInterval(timer))
             <span class="title-en">CYBERSWAT</span>
           </h1>
           <p class="hero-sub" v-reveal>
-            中国人民公安大学网络特警队。<b>政治建警，科技兴警</b>——<br />
-            一支为网络空间安全而生的预备警官队伍。
+            网络特警队。<b>政治建警，科技兴警</b>——<br />
+            一支为网络空间安全而生的网安卫士队伍。
           </p>
           <div class="hero-actions" v-reveal>
             <RouterLink to="/about" class="btn btn-primary">了解队伍</RouterLink>

@@ -18,7 +18,7 @@ const router = createRouter({
           path: '',
           name: 'home',
           component: () => import('@/views/HomeView.vue'),
-          meta: { title: 'CyberSWAT · 中国人民公安大学网络特警队' },
+          meta: { title: 'CyberSWAT · 网络特警队' },
         },
         {
           path: 'about',
