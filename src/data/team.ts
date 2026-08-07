@@ -24,7 +24,7 @@ export const departments: Department[] = [
     slug: 'attack',
     name: '攻防部门',
     en: 'Attack & Defense',
-    desc: '聚焦网络攻防实战与 CTF 竞赛，旗下 0psu3 战队足迹遍布全国，WMCTF 2025 全球第三。',
+    desc: '主打网络攻防与 CTF 竞赛，旗下 0psu3 战队拿下 WMCTF 2025 全球第三。',
     teams: ['0psu3'],
   },
   {
