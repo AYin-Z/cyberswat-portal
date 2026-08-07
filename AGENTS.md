@@ -9,6 +9,7 @@
 - 部署：Docker 容器化（cyberswat-main:latest，nginx:alpine，127.0.0.1:8091）→ CF Tunnel → cyberswat.cn
 - 友情链接：0psu3.team（CTF 部门战队 Opsu3）
 - 端口约定：dev 5174（本地）/ 容器 8091（生产）
+- **Git 双仓库（2026-08-07）**：origin 双 push —— 个人仓 AYin-Z/cyberswat-portal（主源）+ 组织仓 PPSUC-CyberSWAT/cyberswat-portal（同步）。fetch 只从个人仓。`git push origin main` 自动双推。仓库级 http.proxy=127.0.0.1:7890（github 直连 TLS 被重置）
 
 ## 架构设想（2026-08-06 用户口述）
 - **主站 cyberswat.cn**：资讯 + 往期风采 + 社团介绍（主页聚合）——✅ 已上线
