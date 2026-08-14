@@ -79,6 +79,15 @@
   - 核心理由：全栈单一 TS 语言类型全链路共享 + Guard 权限/脱敏体系 + 模块化可复制给其余 7 个部门子站 + 社团新人易接手
 - **仓库组织**：✅ 独立仓库 `cyberswat-dev-portal`（个人 + 组织双仓推送），pnpm workspace monorepo（apps/web + apps/api + packages/shared），理由见选型文档 §5
 
+### 构思 #8 — 插件化架构 + 部门 agent 路线（2026-08-12）
+- **构思**：借鉴 DSH（Cordis 内核）"一切皆插件"设计哲学：内核极简 + 能力包（公告/点子墙/社区/任务）= 插件 + 五个扩展点（事件总线/工具注册表/UI贡献/权限点/数据模型）。未来部门 agent 以插件形态接入。
+- **调研**：docs/plugin-architecture-eval.md（DSH 源码一手证据 + 外部生态检索）
+- **评审结论**：✅ 已认可框架（2026-08-12）
+  - 五个扩展点：EventBus（@nestjs/event-emitter，进程内）+ ToolRegistry（JSON Schema 校验 + 权限点 + 审计，MCP 官方 SDK 暴露）+ 权限点 Decorator（RBAC 角色 + 细粒度权限点）+ 前端 manifest 静态合并（**禁运行时加载**）+ 数据模型命名空间规范（**不用合并工具**）
+  - 部门 agent = 特殊插件：persona + tools 白名单 + 事件订阅 + `bot:*` 身份；**写操作一律草稿态审批 + 审计**；MVP 只做后台 agent，前台交互 L2
+  - 纪律：L0 锁定代码级插件（NestJS Module + manifest.ts），禁提前上运行时加载/消息队列/微前端；L1 配置驱动启停 + MCP 端点 + agent v0；L2 条件触发（独立插件仓库/热加载）
+  - 最大风险：抽象过度 + Prisma 多 schema 生态盲区（以命名空间规范规避）
+
 <!-- 用户抛构思时逐条追加 -->
 
 ## 5. 调研：同类项目参考（2026-08-06）
