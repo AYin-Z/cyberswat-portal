@@ -74,8 +74,10 @@
 
 ### 构思 #7 — 后端技术选型（2026-08-12）
 - **分析**：docs/tech-stack-analysis.md
-- **结论**：✅ 推荐 NestJS 11 + Prisma + PostgreSQL 16 + socket.io + JWT + GitHub OAuth；前端沿用 Vue3+Vite+TS+Pinia 同栈。全栈 TS 单一语言 + Guard 权限体系 + 模块化可复制给其余 7 个部门子站。
-- **待确认**：是否接受 NestJS 学习成本（备选 Fastify 快速 MVP），数据库最终用 PG 还是延续 MySQL 经验。
+- **结论**：✅ 已拍板（2026-08-12，用户授权自由选型，不迁就既有项目经验）
+  - **API**：NestJS 11（TS）+ JWT + GitHub OAuth；**ORM**：Prisma；**DB**：PostgreSQL 16；**实时**：socket.io；**前端**：Vue3 + Vite + TS + Pinia（与主站同栈）
+  - 核心理由：全栈单一 TS 语言类型全链路共享 + Guard 权限/脱敏体系 + 模块化可复制给其余 7 个部门子站 + 社团新人易接手
+- **仓库组织**：✅ 独立仓库 `cyberswat-dev-portal`（个人 + 组织双仓推送），pnpm workspace monorepo（apps/web + apps/api + packages/shared），理由见选型文档 §5
 
 <!-- 用户抛构思时逐条追加 -->
 
