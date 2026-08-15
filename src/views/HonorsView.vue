@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { usePageTitle } from '@/composables/usePageTitle'
+usePageTitle('荣誉墙')
+
 import { awards, departments } from '@/data/team'
 import { vReveal } from '@/directives/reveal'
 

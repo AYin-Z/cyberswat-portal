@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { vReveal } from '@/directives/reveal'
+import { usePageTitle } from '@/composables/usePageTitle'
+usePageTitle('社团介绍')
+
 
 const timeline = [
   {

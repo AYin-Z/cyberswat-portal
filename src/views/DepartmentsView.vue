@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { departments } from '@/data/team'
+import { usePageTitle } from '@/composables/usePageTitle'
+usePageTitle('部门')
+
 import { vReveal } from '@/directives/reveal'
 </script>
 

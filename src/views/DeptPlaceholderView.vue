@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { usePageTitle } from '@/composables/usePageTitle'
 import { departments } from '@/data/team'
+
 import { vReveal } from '@/directives/reveal'
 
 const props = defineProps<{ slug: string }>()
+usePageTitle(departments.find((d) => d.slug === props.slug)?.name ?? '部门')
 
 const dept = computed(() => departments.find((d) => d.slug === props.slug))
 

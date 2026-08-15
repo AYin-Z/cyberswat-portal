@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { usePageTitle } from '@/composables/usePageTitle'
+usePageTitle('网络特警队')
+
 import { departments, awards } from '@/data/team'
 import { vReveal } from '@/directives/reveal'
 

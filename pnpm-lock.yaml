@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@unhead/vue':
+        specifier: ^2.1.17
+        version: 2.1.17(vue@3.5.40(typescript@5.7.2))
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.7.2)(vue@3.5.40(typescript@5.7.2))
