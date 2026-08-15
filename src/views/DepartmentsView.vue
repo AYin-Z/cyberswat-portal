@@ -16,7 +16,7 @@ import { vReveal } from '@/directives/reveal'
     <section class="content container">
       <div class="list">
         <RouterLink
-          v-for="(d, i) in departments"
+          v-for="(d, i) in departments.filter((x) => x.slug !== 'dev')"
           :key="d.slug"
           :to="`/departments/${d.slug}`"
           class="row"
@@ -30,6 +30,22 @@ import { vReveal } from '@/directives/reveal'
           <p class="desc">{{ d.desc }}</p>
           <span class="arrow">→</span>
         </RouterLink>
+        <!-- 开发部：子站已上线，外链 -->
+        <a
+          href="https://dev.cyberswat.cn"
+          target="_blank"
+          rel="noopener"
+          class="row live"
+          v-reveal
+        >
+          <span class="idx">04</span>
+          <div class="info">
+            <h3>开发部 <span class="live-tag">LIVE</span></h3>
+            <p class="en">Development</p>
+          </div>
+          <p class="desc">协作平台已上线 —— 公告 / 点子墙 / 项目任务 / 社区（dev.cyberswat.cn）</p>
+          <span class="arrow">↗</span>
+        </a>
       </div>
     </section>
   </div>
@@ -127,6 +143,30 @@ import { vReveal } from '@/directives/reveal'
 .row:hover .arrow {
   color: var(--accent-bright);
   transform: translateX(4px);
+}
+
+.live-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent-bright);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  vertical-align: middle;
+  animation: livePulse 2.4s infinite;
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
 }
 
 @media (max-width: 760px) {

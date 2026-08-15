@@ -10,6 +10,9 @@ const featuredAwards = computed(() =>
     .slice(0, 8)
 )
 
+// 开发部协作平台（已上线子站）——主站→子站入口
+const devSite = { url: 'https://dev.cyberswat.cn' }
+
 // 部门状态（SOC 面板用；后续接后端数据源）
 const deptStatus: Record<string, 'ACTIVE' | 'IDLE' | 'STANDBY'> = {
   attack: 'ACTIVE',
@@ -153,8 +156,27 @@ onUnmounted(() => clearInterval(timer))
       <div class="container">
         <div class="section-label" v-reveal>DEPARTMENTS // 八大部门</div>
         <div class="dept-grid" v-reveal>
+          <!-- 部门卡片：dev 部门外链到已上线的协作平台子站 -->
+          <a
+            v-if="devSite"
+            :href="devSite.url"
+            target="_blank"
+            rel="noopener"
+            class="dept live"
+          >
+            <div class="idx">04</div>
+            <div class="name">开发部</div>
+            <div class="en">Development</div>
+            <div class="meta">
+              <span>协作平台已上线</span>
+              <span class="status">
+                <span class="dot live-dot"></span>
+                LIVE
+              </span>
+            </div>
+          </a>
           <RouterLink
-            v-for="(d, i) in departments"
+            v-for="(d, i) in departments.filter((x) => x.slug !== 'dev')"
             :key="d.slug"
             :to="`/departments/${d.slug}`"
             class="dept"
@@ -446,6 +468,23 @@ onUnmounted(() => clearInterval(timer))
   text-decoration: none;
   color: inherit;
   transition: background var(--dur-fast) var(--ease);
+}
+.dept.live {
+  position: relative;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), transparent 60%);
+}
+.dept.live::after {
+  content: '↗';
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  color: var(--accent-bright);
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+.dept .live-dot {
+  background: var(--accent-bright);
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.7);
 }
 .dept:nth-child(4n) {
   border-right: none;

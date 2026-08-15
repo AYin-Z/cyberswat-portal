@@ -33,7 +33,7 @@
   /* 文本 */
   --text: #e6edf3;
   --text-dim: #9aa7b8;
-  --text-faint: #5f6b7d;
+  --text-faint: #7d8a9c; /* ≥4.5:1 对比度（#0a0e1a 底上）*/
 
   /* 强调色 — 警蓝 */
   --accent: #3b82f6;
@@ -132,6 +132,13 @@ a:hover {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-faint);
+}
+
+/* 键盘焦点可见性（无障碍基线） */
+:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* 尊重减弱动效偏好 */

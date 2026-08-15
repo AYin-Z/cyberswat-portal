@@ -2,14 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
 import { departments } from '@/data/team'
 
-const router = createRouter({
-  history: createWebHistory(),
-  scrollBehavior(to, _from, saved) {
-    if (saved) return saved
-    if (to.hash) return { el: to.hash, top: 72 }
-    return { top: 0 }
-  },
-  routes: [
+/** 路由配置（vite-ssg 预渲染与运行时共用同一份） */
+export function setupRouter() {
+  return [
     {
       path: '/',
       component: MainLayout,
@@ -55,11 +50,21 @@ const router = createRouter({
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
-  ],
-})
+  ]
+}
 
-router.afterEach((to) => {
-  if (to.meta.title) document.title = to.meta.title as string
-})
-
-export default router
+/**
+ * 浏览器运行时 router（惰性创建，避免预渲染/SSR 下执行 createWebHistory）
+ * vite-ssg 在预渲染时用自己的 memory history，不会走到这里
+ */
+export function createAppRouter() {
+  return createRouter({
+    history: createWebHistory(),
+    scrollBehavior(to, _from, saved) {
+      if (saved) return saved
+      if (to.hash) return { el: to.hash, top: 72 }
+      return { top: 0 }
+    },
+    routes: setupRouter(),
+  })
+}

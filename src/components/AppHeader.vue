@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const scrolled = ref(false)
+const menuOpen = ref(false)
 
 function onScroll() {
   scrolled.value = window.scrollY > 8
@@ -24,7 +25,7 @@ const nav = [
 <template>
   <header class="nav" :class="{ scrolled }">
     <div class="container nav-inner">
-      <RouterLink to="/" class="brand">
+      <RouterLink to="/" class="brand" @click="menuOpen = false">
         <img src="/logo.png" alt="CyberSWAT 队徽" class="brand-mark" />
         <span class="brand-text">
           <strong>CyberSWAT</strong>
@@ -32,12 +33,39 @@ const nav = [
         </span>
       </RouterLink>
 
-      <nav class="links">
+      <!-- 桌面端导航 -->
+      <nav class="links" aria-label="主导航">
         <RouterLink v-for="item in nav" :key="item.to" :to="item.to" class="link">
           {{ item.label }}
         </RouterLink>
       </nav>
+
+      <!-- 移动端汉堡按钮 -->
+      <button
+        class="burger"
+        :class="{ open: menuOpen }"
+        :aria-expanded="menuOpen"
+        :aria-label="menuOpen ? '关闭菜单' : '打开菜单'"
+        @click="menuOpen = !menuOpen"
+      >
+        <span class="bar" /><span class="bar" /><span class="bar" />
+      </button>
     </div>
+
+    <!-- 移动端抽屉菜单 -->
+    <Transition name="drawer">
+      <nav v-if="menuOpen" class="drawer" aria-label="移动端导航">
+        <RouterLink
+          v-for="item in nav"
+          :key="item.to"
+          :to="item.to"
+          class="drawer-link"
+          @click="menuOpen = false"
+        >
+          {{ item.label }}
+        </RouterLink>
+      </nav>
+    </Transition>
   </header>
 </template>
 
@@ -119,13 +147,92 @@ const nav = [
   color: var(--accent-bright);
 }
 
+/* 汉堡按钮（仅移动端显示） */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.burger .bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  transition:
+    transform var(--dur-fast) var(--ease),
+    opacity var(--dur-fast) var(--ease);
+}
+
+.burger.open .bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.burger.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.burger.open .bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* 移动端抽屉 */
+.drawer {
+  display: none;
+  flex-direction: column;
+  padding: 8px 16px 16px;
+  border-top: 1px solid var(--border);
+  background: rgba(10, 14, 26, 0.97);
+}
+
+.drawer-link {
+  padding: 13px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.drawer-link:hover,
+.drawer-link.router-link-active {
+  color: var(--accent-bright);
+  background: var(--bg-hover);
+}
+
+.drawer-enter-active,
+.drawer-leave-active {
+  transition:
+    opacity var(--dur-med) var(--ease),
+    transform var(--dur-med) var(--ease);
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
 @media (max-width: 560px) {
   .brand-text em {
     display: none;
   }
-  .link {
-    padding: 7px 9px;
-    font-size: 13px;
+
+  .links {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .drawer {
+    display: flex;
   }
 }
 </style>

@@ -5,16 +5,24 @@ import { vReveal } from '@/directives/reveal'
 
 const yearFilter = ref<number | 'all'>('all')
 const deptFilter = ref<string>('all')
+const searchQuery = ref('')
+const sortOrder = ref<'desc' | 'asc'>('desc')
 
 const years = computed(() => [...new Set(awards.map((a) => a.year))].sort((a, b) => b - a))
 
-const filtered = computed(() =>
-  awards.filter(
+const filtered = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase()
+  const list = awards.filter(
     (a) =>
       (yearFilter.value === 'all' || a.year === yearFilter.value) &&
-      (deptFilter.value === 'all' || a.dept === deptFilter.value)
+      (deptFilter.value === 'all' || a.dept === deptFilter.value) &&
+      (!q ||
+        a.event.toLowerCase().includes(q) ||
+        a.result.toLowerCase().includes(q) ||
+        deptName(a.dept).toLowerCase().includes(q))
   )
-)
+  return list.sort((a, b) => (sortOrder.value === 'desc' ? b.year - a.year : a.year - b.year))
+})
 
 const deptName = (slug: string) => departments.find((d) => d.slug === slug)?.name ?? slug
 
@@ -38,6 +46,32 @@ const levelLabel: Record<string, string> = {
 
     <section class="content container">
       <div class="filters" v-reveal>
+        <div class="filter-row">
+          <div class="search-box">
+            <input
+              v-model="searchQuery"
+              type="search"
+              placeholder="搜索赛事 / 结果 / 部门…"
+              aria-label="搜索荣誉"
+            />
+          </div>
+          <div class="sort-box">
+            <button
+              class="chip"
+              :class="{ active: sortOrder === 'desc' }"
+              @click="sortOrder = 'desc'"
+            >
+              最新优先
+            </button>
+            <button
+              class="chip"
+              :class="{ active: sortOrder === 'asc' }"
+              @click="sortOrder = 'asc'"
+            >
+              最早优先
+            </button>
+          </div>
+        </div>
         <div class="filter-group">
           <span class="filter-label">年份</span>
           <button
@@ -79,6 +113,7 @@ const levelLabel: Record<string, string> = {
       </div>
 
       <p class="count">{{ filtered.length }} 项荣誉</p>
+      <p v-if="!filtered.length" class="empty">没有匹配的荣誉 — 试试调整筛选或搜索词</p>
 
       <div class="award-grid">
         <div v-for="a in filtered" :key="a.id" class="award-card" v-reveal>
@@ -128,6 +163,53 @@ const levelLabel: Record<string, string> = {
 
 .content {
   padding-bottom: 96px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 220px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 9px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font-body);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-box input::placeholder {
+  color: var(--text-faint);
+}
+
+.sort-box {
+  display: flex;
+  gap: 6px;
+}
+
+.empty {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-faint);
+  font-size: 14px;
 }
 
 .filters {
