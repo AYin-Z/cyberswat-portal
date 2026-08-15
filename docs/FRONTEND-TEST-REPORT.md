@@ -2,7 +2,7 @@
 
 > 测试对象：cyberswat-dev-portal `apps/web`（Vue3.5 + Vite + TS + Pinia + Naive UI 2.44.1 + vue-router4 + socket.io-client）
 > 测试方式：vitest@4.1.10 + @vue/test-utils@2.4.11 + jsdom@30 + @pinia/testing@2.0.1（全新搭建）
-> 测试日期：2026-08-15 · 状态：✅ 基建落地 + **3 个 🔴 缺陷已全部修复**，**64/64 用例全绿**，typecheck 通过
+> 测试日期：2026-08-15 · 状态：✅ 基建落地 + **3 个 🔴 已修复（第二轮）** + **全站 API 客户端统一（🔴-4/🟡-1/2/4/6/8）**，**66/66 用例全绿**，typecheck 通过
 > 提交：cyberswat-dev-portal（见本次 commit，标注「前端测试基建与用例」）
 > 路径前缀：`web/` = `apps/web/src/`，`dist/` = `apps/web/dist/`
 
@@ -42,7 +42,8 @@
 
 ### 2.1 通过情况
 
-- **64/64 全部通过**。初版 3 个「预期失败」用例（各自锚定一个真实 🔴 缺陷）在修复后**自动转绿**，用例本身保留为回归守卫，并补充了更贴近真实 Sortable.js 事件结构的拖拽用例。
+- **66/66 全部通过**（64 基线 + 新增 2 个 LoginView next 回跳/防 open redirect 用例）。初版 3 个「预期失败」用例（各自锚定一个真实 🔴 缺陷）在修复后**自动转绿**，用例本身保留为回归守卫。
+- **第二轮修复（🔴-4 统一 API 客户端）**：全站 20 视图 48 处调用点迁移 `api()`；api.test.ts「401 无 refreshToken」用例由「缺陷文档化」改写为断言修复行为（登出+跳转）；NotificationBell.test.ts 断言适配 Headers 实例。
 - 上一轮 🔴-1（缺 n-message-provider 全站白屏）**已修复并加回归守卫**：smoke.test.ts「无 NMessageProvider 时 useMessage 抛错」用例验证该回归确实会被拦截。
 - 上一轮 🟢-11（StatusBadge 无 type 抛 TypeError）**已修复**：7 个用例全绿。
 
@@ -88,7 +89,10 @@
 - 证据：TaskBoardView.test.ts「修复方向验证」用例证明：若 handler 拿到的是目标列（col.key=IN_PROGRESS），claim 分支可正常工作 → 问题 100% 在事件绑定侧。
 - 修复建议：handler 用 `e.to`（目标容器 DOM）反查目标列 key（如给 `.col-body` 加 `data-col`），比较 `t.status !== targetColKey` 后调 `move(t, targetColKey)`；或给卡片补「移动到」按钮兜底（FRONTEND.md §4 承诺项）。
 
-**🔴-4 统一 API 客户端（401 拦截 / refresh 续期）零接入 —— 🔴-8 修复只停留在 lib 层**
+**🔴-4 统一 API 客户端（401 拦截 / refresh 续期）零接入 —— 🔴-8 修复只停留在 lib 层** ✅ **已修复**
+- 修复：**全站 20 个视图 48 处调用点全部迁移到 `api()`**（自动带 token / 401→refresh→重放 / 非 2xx 抛 ApiError）；`api.ts` 401 分支重构——refreshToken 判断移入分支内部，无 refreshToken（如 GitHub 登录）或续期失败一律登出跳转（api.test.ts 对应用例已从「缺陷文档化」改为断言修复行为）。
+- 有意保留的 5 处裸 fetch：LoginView `/api/auth/me`（GitHub 临时 hash token，不走 store）、AgentView MCP `/register` `/token`（跨域 OAuth 端点，不能带站内 Authorization）、stores/auth（防与 api.ts 循环依赖）。
+- 附带消灭：🟡-4（HomeView 脆弱解析）、🟡-6（假成功）、🟡-8（注册无 refresh token）。
 - 位置：`web/src/lib/api.ts`（全仓库**无任何 import**，grep 确认）；所有视图仍用裸 `fetch`（如 `HomeView.vue:60-63`、`TaskBoardView.vue:67-69`、`IdeaListView.vue:38-40`…）
 - 影响：access token 15 分钟过期后，**所有视图**直接 401 失败；refresh 续期、ApiError 统一错误处理全部形同虚设。叠加 HomeView 的脆弱解析（见 🟡-4），刷新页面即可能卡死。
 - 附带缺陷：`api.ts:62` 的 `if (res.status === 401 && auth.refreshToken && !options.skipAuth)` —— refreshToken 为空（如 GitHub 登录 `setTokens(hashToken,'')`）时 401 **不登出、不跳转**，只抛错，用户滞留报错页（已由 api.test.ts 文档化）。
@@ -96,12 +100,14 @@
 
 ### 🟡 重要（体验破损 / 边界缺陷 / 权限 UX）
 
-**🟡-1 登录后忽略路由守卫携带的 next 参数，深层页回跳失效**
+**🟡-1 登录后忽略路由守卫携带的 next 参数，深层页回跳失效** ✅ **已修复**
+- 修复：`LoginView.vue` 新增 `nextPath()`——表单登录与 GitHub 回调均回跳 `?next=`（仅允许站内相对路径，`//` 与外链回落首页，防 open redirect）；新增 2 个测试用例（`?next=/tasks` 回跳、`?next=https://evil.example` 回落）。
 - 位置：`router/index.ts:31`（守卫写入 `next`）；`web/views/LoginView.vue:19`（`submit()` 恒 `router.push('/')`）
 - 复现：未登录点开 `/tasks` → 跳 `/login?next=/tasks` → 登录成功 → 落到首页而非任务页。
 - 修复：`router.push((route.query.next as string) ?? '/')`（注意 next 为相对路径，需防 open redirect）。
 
-**🟡-2 管理菜单对全体成员可见，普通成员反复撞 403**
+**🟡-2 管理菜单对全体成员可见，普通成员反复撞 403** ✅ **已修复**
+- 修复：`UiContribution.menu` 增加可选 `roles?: string[]`（省略 = 全员可见）；invites/approvals/moderation 三个 manifest 声明 `roles: ['dept-leader','admin']`（与后端守卫一致：invite.controller / tools.controller:52 / moderation.service:45,92）；App.vue `menuOptions` 按 `auth.user?.role` 过滤。
 - 位置：`web/App.vue:19-29`（`menuOptions` 直接铺 `ui.menu`，无角色过滤）
 - 影响：member 也能看到「审批 / 处置 / 邀请」入口，点击后被后端 403（后端已按权限收紧，前端未同步隐藏）；上一轮 🟡-4 前端侧仍未修。
 - 修复：按 `auth.user?.role` 过滤（dept-leader/admin 才显示 approvals/moderation/invites），或后端下发菜单权限。
@@ -111,7 +117,8 @@
 - 影响：面板 `background: var(--panel)` 无效 → 透明底、边框/文字颜色回退，深色主题下可读性差；`color: var(--fg)` 无效。上一轮 🟢-10 前端侧未修。
 - 修复：全部改为 `--cs-*` 语义变量。
 
-**🟡-4 刷新页面时 token 过期 → HomeView 解析崩溃/无限 loading（会话竞态）**
+**🟡-4 刷新页面时 token 过期 → HomeView 解析崩溃/无限 loading（会话竞态）** ✅ **已修复**
+- 修复：HomeView 迁移到 `api()`（非 2xx 抛错）+ try/catch/finally（finally 兜底 loading）；全站统一后 401 由 api() 处理续期或登出跳转。
 - 位置：`web/main.ts:14`（`restore()` 异步，登出晚于守卫）；`router/index.ts:29`（守卫读 localStorage 已通过）；`web/views/HomeView.vue:59-68`（4 个 fetch 均 `r.json()` 无 `res.ok` 校验，`(t ?? []).slice(0,6)` 遇 401 错误对象 `{message}` 直接 TypeError）
 - 复现：登录后等 access token 过期 → 刷新页面 → 守卫放行 → `/me` 失败登出（异步）与 HomeView 挂载（同步）竞态 → 列表渲染崩溃、loading 卡死。
 - 修复：视图统一走 `api()`（🔴-4）；`restore()` 失败后主动触发路由回登录。
@@ -121,7 +128,8 @@
 - 影响：待接单/进行中/待验收数字上限 6，任务多时误导部长。
 - 修复：KPI 基于原始数组，展示层再截断。
 
-**🟡-6 操作型请求普遍不校验 `res.ok`，403/失败也弹成功提示（假成功误导）**
+**🟡-6 操作型请求普遍不校验 `res.ok`，403/失败也弹成功提示（假成功误导）** ✅ **已修复**
+- 修复：全站写操作迁移 `api()` 后统一 try/catch + `message.error(e.message)`——审批/处置/邀请/看板 claim·submit·review/项目详情/社区 like·comment·report·删除/点子 join 等全部失败即报错、不再假成功（TaskBoardView.test.ts 断言仍在验证成功路径）。
 - 位置：`web/capabilities/approvals/ApprovalsView.vue:32-40`（审批失败也弹「已批准并执行」）、`web/capabilities/moderation/ModerationView.vue:43-50`（弹「已删除违规内容」）、`web/capabilities/invites/InvitesView.vue:62-69`（弹「已撤销」）、`web/capabilities/project/TaskBoardView.vue:96-106`（claim/submit 失败也弹「任务已更新」）、`web/capabilities/project/ProjectDetailView.vue:41-64`（claim/submit/review 同）、`web/capabilities/community/PostDetailView.vue:50-56`（like 不校验）
 - 修复：统一 `if (!res.ok) return message.error(…)`；建议抽公共请求封装（🔴-4 一并解决）。
 
@@ -129,7 +137,8 @@
 - 位置：`web/views/HomeView.vue:161-171`；守卫（`router/index.ts:30-32`）会把未登录访问 `/` 一律重定向 `/login`，hero 分支不可达。
 - 修复：删除死代码，或把 `/` 改为公开页让品牌入口生效（产品决策）。
 
-**🟡-8 RegisterView 绕过 setTokens，注册后无 refresh token**
+**🟡-8 RegisterView 绕过 setTokens，注册后无 refresh token** ✅ **已修复**
+- 修复：`RegisterView.vue` 改 `auth.setTokens(data.accessToken, data.refreshToken)`（后端 LoginResult 返回双 token，注册用户同样获得 14 天续期能力）。
 - 位置：`web/views/RegisterView.vue:38-40`（`auth.token = …; localStorage.setItem('dev_token', …)`，未写 `dev_refresh`、未走 `setTokens`）
 - 影响：与 🔴-8 的会话治理不一致，注册用户无续期能力；后端若同时返回 refreshToken 则被丢弃。
 - 修复：`auth.setTokens(data.accessToken, data.refreshToken)`。
@@ -182,8 +191,8 @@
 |---|---|---|---|---|
 | 1 | ProfileView NSelect 补 `children-field="options"`（1 行） | 🔴-1 | 资料页必崩白屏，一行修复，收益立竿见影；回归用例已就位 | ✅ 已修复 |
 | 2 | 任务看板：卡片改默认槽 + v-for 渲染；@end 用 `e.from/e.to` 反查目标列再 move | 🔴-2、🔴-3 | 旗舰功能「空看板 + 状态机不可达」双重失效；两个修复方向均已由测试验证可行 | ✅ 已修复 |
-| 3 | 全站视图接入 `lib/api.ts`（或全局 fetch 拦截 401→refresh→重放）+ 修复 api.ts 无 refreshToken 不登出分支 | 🔴-4、🟡-4 | 15 分钟强制失效 + 刷新页面崩溃链，一次改造全站收益；同步消灭 🟡-6 的假成功 | ⏳ 待办 |
-| 4 | 菜单按角色过滤（App.vue）+ LoginView 消费 `query.next` 回跳 | 🟡-1、🟡-2 | 权限 UX 两处高感知缺陷，改动集中在两个文件 | ⏳ 待办 |
+| 3 | 全站视图接入 `lib/api.ts` + 修复 api.ts 无 refreshToken 不登出分支 | 🔴-4、🟡-4、🟡-6、🟡-8 | 15 分钟强制失效 + 刷新页面崩溃链 + 假成功误导；一次改造全站收益 | ✅ 已修复 |
+| 4 | 菜单按角色过滤（App.vue）+ LoginView 消费 `query.next` 回跳 | 🟡-1、🟡-2 | 权限 UX 两处高感知缺陷，改动集中在两个文件 | ✅ 已修复 |
 | 5 | NotificationBell 样式变量改 `--cs-*` + 点击单条已读 | 🟡-3、🟡-10 | 通知闭环体验修复 + 上一轮遗留项收口 | ⏳ 待办 |
 
 **备注**：🔴-2/🔴-3 修复后，「预期失败」用例已同步改写为正常回归断言（真实 Sortable.js 事件结构：`evt.from/evt.to` 为列容器 DOM，`evt.item` 为卡片 DOM），已全部转绿。
