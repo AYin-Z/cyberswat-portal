@@ -71,7 +71,7 @@
 
 ## 待办
 - [ ] LOGO 替换 ⬡ 占位符（等师兄给图）
-- [ ] 开发部子站：换生产 JWT_SECRET/DB 密码 + GitHub OAuth 配置（dev.cyberswat.cn 已上线，见 cyberswat-dev-portal AGENTS.md）
+- [ ] 开发部子站：换生产 JWT_SECRET/DB 密码（GitHub OAuth 已配置完成 2026-08-15，见 cyberswat-dev-portal AGENTS.md）
 - [ ] 部门子站 PRD 收集 → 逐个上线（端口 8093-8099 仍预留；开发部已用 8092）
 - [ ] 资讯频道（公众号内容同步，挂 todolist）
 - [ ] 主站内容扩充（成员风采页等，数据在 showcase 文档）
