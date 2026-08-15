@@ -1,6 +1,6 @@
 # 开发部子站系统 — 技术选型（定稿）
 
-> 日期：2026-08-12 · 状态：✅ 已拍板
+> 日期：2026-08-12 · 状态：✅ 已拍板并落地（2026-08-15 dev.cyberswat.cn 全功能上线）
 > 场景：开发部子站（dev.cyberswat.cn）前后端完备系统，承载公告发布 / 信息流转 / 轻量社区 / 点子墙
 > 原则：不迁就既有项目经验，从需求特征选择最合适的技术栈
 
@@ -91,7 +91,15 @@ PostgreSQL 容器 (cyberswat-dev-db, 仅内网 127.0.0.1 绑定或 docker 内网
   ```
 - 理由：主站是纯静态仓库，不应混入后端复杂度；子站体系每部门一仓（或按需聚合），符合"各部门独立 PRD 独立部署"既定架构
 
-## 6. 里程碑建议
+## 6. 落地结果（2026-08-15）
+- ✅ 全栈 TS 单一语言 + NestJS 内核 + 能力包模式：5 个能力包（announcement/idea-wall/project/community/example）全部 manifest 注册
+- ✅ 权限四层（guest/member/dept-leader/admin）+ 权限点 + 字段脱敏：实测 member 调部长 API 403
+- ✅ Prisma + PostgreSQL：10 张表（core_×6 + announcement_×2 + idea_wall_×2 + project_×3 + community_×3 + notifications）
+- ✅ socket.io 实时：公告广播/任务定向/@提及 全链路线上验证
+- ✅ 部署：Docker(node:24-slim) + CF Tunnel 远程 ingress + DNS CNAME
+- ⚠️ 待办：生产 JWT_SECRET/DB 密码更换、GitHub OAuth client 配置
+
+## 7. 里程碑建议（原稿）
 
 - M0: 仓库 + monorepo 骨架 + CI 构建跑通
 - M1: 认证（邮箱注册/登录/JWT/GitHub OAuth）+ 权限分层（访客/成员/部长/管理员）

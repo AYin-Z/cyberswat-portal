@@ -1,6 +1,6 @@
 # CyberSWAT 门户 PRD（v0.1 — 构思收集阶段）
 
-> 状态：demo 已完成（https://cyberswat.cn），本文件为整体 PRD 演进文档
+> 状态：主站上线 ✅（cyberswat.cn）+ 开发部子站全功能上线 ✅（dev.cyberswat.cn, 2026-08-15），本文件为整体 PRD 演进文档
 > 原则：先完整性后取舍，构思全部记录，再逐条评审（可行性/优先级/依赖）
 
 ## 1. 定位
@@ -74,7 +74,7 @@
 
 ### 构思 #7 — 后端技术选型（2026-08-12）
 - **分析**：docs/tech-stack-analysis.md
-- **结论**：✅ 已拍板（2026-08-12，用户授权自由选型，不迁就既有项目经验）
+- **结论**：✅ 已拍板并落地（2026-08-12 拍板，2026-08-15 全功能上线）
   - **API**：NestJS 11（TS）+ JWT + GitHub OAuth；**ORM**：Prisma；**DB**：PostgreSQL 16；**实时**：socket.io；**前端**：Vue3 + Vite + TS + Pinia（与主站同栈）
   - 核心理由：全栈单一 TS 语言类型全链路共享 + Guard 权限/脱敏体系 + 模块化可复制给其余 7 个部门子站 + 社团新人易接手
 - **仓库组织**：✅ 独立仓库 `cyberswat-dev-portal`（个人 + 组织双仓推送），pnpm workspace monorepo（apps/web + apps/api + packages/shared），理由见选型文档 §5
@@ -82,7 +82,7 @@
 ### 构思 #8 — 插件化架构 + 部门 agent 路线（2026-08-12）
 - **构思**：借鉴 DSH（Cordis 内核）"一切皆插件"设计哲学：内核极简 + 能力包（公告/点子墙/社区/任务）= 插件 + 五个扩展点（事件总线/工具注册表/UI贡献/权限点/数据模型）。未来部门 agent 以插件形态接入。
 - **调研**：docs/plugin-architecture-eval.md（DSH 源码一手证据 + 外部生态检索）
-- **评审结论**：✅ 已认可框架（2026-08-12）
+- **评审结论**：✅ 已认可并落地（2026-08-12 认可 → 2026-08-15 全功能上线，L0 代码级插件全部实现）
   - 五个扩展点：EventBus（@nestjs/event-emitter，进程内）+ ToolRegistry（JSON Schema 校验 + 权限点 + 审计，MCP 官方 SDK 暴露）+ 权限点 Decorator（RBAC 角色 + 细粒度权限点）+ 前端 manifest 静态合并（**禁运行时加载**）+ 数据模型命名空间规范（**不用合并工具**）
   - 部门 agent = 特殊插件：persona + tools 白名单 + 事件订阅 + `bot:*` 身份；**写操作一律草稿态审批 + 审计**；MVP 只做后台 agent，前台交互 L2
   - 纪律：L0 锁定代码级插件（NestJS Module + manifest.ts），禁提前上运行时加载/消息队列/微前端；L1 配置驱动启停 + MCP 端点 + agent v0；L2 条件触发（独立插件仓库/热加载）
@@ -123,6 +123,8 @@
 
 ## 6. 里程碑
 - [x] M0: demo 上线（2026-08-06）
-- [ ] M1: PRD 定稿
-- [ ] M2: 主站完整版
-- [ ] M3: 子站体系
+- [x] M1: PRD 定稿（2026-08-12 构思 #4-#8 评审）
+- [x] M2: 主站完整版（SOC 执法级视觉重构 + 公网脱敏，2026-08-07）
+- [x] M3: 子站体系 — 开发部样板上线（dev.cyberswat.cn, 2026-08-15，独立仓库 cyberswat-dev-portal）
+  - 开发部子站里程碑：M0 骨架 → M1 认证+公告 → M2 点子墙+成员 → M3 任务+孵化 → M4 社区+实时 → M5 上线+端到端验证（全部 ✅）
+- [ ] M4: 其余部门子站（attack/forensics/modeling/algorithm/bigdata/ai/pr，PRD 收集后逐个上线）

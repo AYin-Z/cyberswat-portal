@@ -1,6 +1,6 @@
 # 开发部子站 — 插件化架构调研与评估
 
-> 日期：2026-08-12 · 状态：评估稿
+> 日期：2026-08-12 · 状态：✅ 已落地（L0 全实现，2026-08-15 上线）
 > 输入：DSH/Cordis 源码一手调研（本机 /home/ayin/.local/lib/node_modules/@deepseek-ai/dsh）+ 外部生态检索
 > 决策上下文：用户认可"一切皆插件"哲学，未来要做部门 agent
 
@@ -141,7 +141,13 @@ L1（M3-M4）        配置驱动启停（DB plugins 表，启动时组装）
 L2（远期，条件触发）独立插件仓库 / 热加载 / agent 前台交互 —— 有真实需求再启动
 ```
 
-## 6. 最终评估结论
+## 6. 落地验证（2026-08-15）
+- ✅ 五个扩展点全部按 L0 实现：事件总线(event-emitter)/工具注册表(8工具含审批+审计)/UI贡献(manifest 组合)/权限点(Decorator+Guard)/数据模型(命名空间规范)
+- ✅ 部门 agent 预留：invite.create / announcement.publish / task.create 三个 agent 工具带审批 + 全量审计，MCP 端点未接（L1）
+- ✅ 纪律遵守：未引入运行时加载/消息队列/微前端/prisma 合并工具
+- ⚠️ 实测偏差记录：socket.io 全员广播需客户端 join 'all' room（gateway 实现细节）
+
+## 7. 最终评估结论
 
 | 维度 | 结论 |
 |---|---|
