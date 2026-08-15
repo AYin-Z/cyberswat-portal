@@ -4,6 +4,7 @@ import { usePageTitle } from '@/composables/usePageTitle'
 usePageTitle('网络特警队')
 
 import { departments, awards } from '@/data/team'
+import { news } from '@/data/news'
 import { vReveal } from '@/directives/reveal'
 
 // 首页展示荣誉精选：国际 + 国家级
@@ -12,6 +13,9 @@ const featuredAwards = computed(() =>
     .filter((a) => a.level === 'international' || a.level === 'national')
     .slice(0, 8)
 )
+
+// 首页最新动态：最近 3 条资讯
+const latestNews = computed(() => news.slice(0, 3))
 
 // 开发部协作平台（已上线子站）——主站→子站入口
 const devSite = { url: 'https://dev.cyberswat.cn' }
@@ -212,6 +216,30 @@ onUnmounted(() => clearInterval(timer))
             <p class="honor-event">{{ a.event }}</p>
             <p class="honor-result">{{ a.result }}</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 最新动态 -->
+    <section class="updates">
+      <div class="container">
+        <div class="section-head" v-reveal>
+          <div class="section-label">LATEST // 最新动态</div>
+          <RouterLink to="/news" class="section-more">全部资讯 →</RouterLink>
+        </div>
+        <div class="update-list">
+          <RouterLink
+            v-for="n in latestNews"
+            :key="n.id"
+            to="/news"
+            class="update-item"
+            v-reveal
+          >
+            <span class="update-date">{{ n.date }}</span>
+            <span class="update-cat">{{ n.category }}</span>
+            <span class="update-title">{{ n.title }}</span>
+            <span class="update-arrow">→</span>
+          </RouterLink>
         </div>
       </div>
     </section>
@@ -543,6 +571,87 @@ onUnmounted(() => clearInterval(timer))
 }
 
 /* ===== 荣誉 ===== */
+.updates {
+  padding: 72px 0;
+  border-top: 1px solid var(--border);
+}
+
+.update-list {
+  border-top: 1px solid var(--border);
+}
+
+.update-item {
+  display: grid;
+  grid-template-columns: 92px 52px 1fr 24px;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  transition:
+    background var(--dur-fast) var(--ease),
+    padding var(--dur-fast) var(--ease);
+}
+
+.update-item:hover {
+  background: var(--bg-card);
+  padding-left: 14px;
+}
+
+.update-date {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.update-cat {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent-bright);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 2px 10px;
+  text-align: center;
+}
+
+.update-title {
+  font-size: 15px;
+}
+
+.update-arrow {
+  color: var(--text-faint);
+  transition:
+    transform var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease);
+}
+
+.update-item:hover .update-arrow {
+  color: var(--accent-bright);
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .update-item {
+    grid-template-columns: 1fr 20px;
+    gap: 8px;
+  }
+  .update-date {
+    grid-column: 1;
+  }
+  .update-cat {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: start;
+    margin-top: 20px;
+  }
+  .update-title {
+    grid-column: 1 / -1;
+  }
+  .update-arrow {
+    display: none;
+  }
+}
+
 .honors {
   padding: 0 0 96px;
 }
