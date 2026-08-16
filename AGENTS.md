@@ -59,6 +59,9 @@
 5. **坑**：alpine→slim(glibc 引擎)、apt openssl、API 绑 0.0.0.0、nginx upstream 需 network-alias、compose 镜像缓存需删容器重建
 
 ## 已知坑
+- **vite-ssg 动态路由展开渲染 bug**（2026-08-16 发现）：默认 includedRoutes 自动展开 router 全部静态路径
+  （含 departments/:slug 展开），SSR 渲染动态路由时错误渲染成首页。修复：ssgOptions.includedRoutes
+  显式只列静态页，动态路由走 SPA fallback（nginx try_files $uri.html）。新页面需手动加进列表
 - **Docker 容器内访问外网**（npm/apt 等）：Mihomo fake-ip 黑洞——容器 bridge 流量不进 TUN，域名解析成 fake-ip 后连接超时。已修：fake-ip-filter 加 registry.npmmirror.com / registry.npmjs.org / dl-cdn.alpinelinux.org / github.com 等（~/.config/mihomo/config.yaml）。改后 curl PUT :9090/configs 重载
 - **Docker 镜像构建**：容器内 npm install 仍可能卡（Node HTTP 栈与 fake-ip 交互遗留问题），本项目 Dockerfile 采用"宿主 pnpm build → 镜像 COPY dist"，容器内不需要 npm
 - **CF token**：已有权限 = Tunnel:Edit + DNS:Edit + Zone:Edit（2026-08-06 用户加了 Zone:Edit），创建 zone 需要后者
