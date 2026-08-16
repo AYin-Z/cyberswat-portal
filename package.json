@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/node": "^22.10.0",
     "@vitejs/plugin-vue": "^5.2.1",
+    "beasties": "^0.4.3",
     "typescript": "~5.7.2",
     "vite": "^6.4.3",
     "vite-ssg": "^28.3.0",
