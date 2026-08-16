@@ -2,15 +2,16 @@
 import { computed } from 'vue'
 import { usePageTitle } from '@/composables/usePageTitle'
 import { departments } from '@/data/team'
-
+import { liveSubsites } from '@/data/sites'
 import { vReveal } from '@/directives/reveal'
 
 const props = defineProps<{ slug: string }>()
 usePageTitle(departments.find((d) => d.slug === props.slug)?.name ?? '部门')
 
 const dept = computed(() => departments.find((d) => d.slug === props.slug))
-
 const subdomain = computed(() => (props.slug ? `${props.slug}.cyberswat.cn` : ''))
+// 查子站注册表：已上线 → 展示真实入口；未上线 → 占位
+const live = computed(() => liveSubsites.find((s) => s.slug === props.slug))
 </script>
 
 <template>
@@ -23,7 +24,27 @@ const subdomain = computed(() => (props.slug ? `${props.slug}.cyberswat.cn` : ''
       </div>
     </section>
 
-    <section class="notice container" v-reveal>
+    <!-- 子站已上线：展示真实入口 -->
+    <section v-if="live" class="notice container" v-reveal>
+      <div class="card live-card">
+        <span class="live-badge">
+          <span class="live-dot"></span>
+          LIVE · {{ live.launchedAt }} 上线
+        </span>
+        <h2>{{ dept?.name }}协作平台</h2>
+        <p>{{ live.tagline }}</p>
+        <div class="features">
+          <span v-for="f in live.features" :key="f" class="feature">{{ f }}</span>
+        </div>
+        <a :href="live.url" target="_blank" rel="noopener" class="enter-btn">
+          进入 {{ dept?.name }}协作平台 ↗
+        </a>
+        <RouterLink to="/departments" class="back">← 返回部门列表</RouterLink>
+      </div>
+    </section>
+
+    <!-- 子站建设中：占位 -->
+    <section v-else class="notice container" v-reveal>
       <div class="card">
         <span class="icon">⬡</span>
         <h2>部门子站建设中</h2>
@@ -74,13 +95,53 @@ const subdomain = computed(() => (props.slug ? `${props.slug}.cyberswat.cn` : ''
 }
 
 .card {
-  max-width: 520px;
+  max-width: 560px;
   margin: 0 auto;
   text-align: center;
   padding: 48px 32px;
   border: 1px dashed var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--bg-card);
+}
+
+.live-card {
+  border: 1px solid var(--accent);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59, 130, 246, 0.08), transparent),
+    var(--bg-card);
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--accent-bright);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 4px 14px;
+  margin-bottom: 18px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 6px rgba(63, 185, 80, 0.7);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 .icon {
@@ -113,9 +174,45 @@ const subdomain = computed(() => (props.slug ? `${props.slug}.cyberswat.cn` : ''
   border-radius: 4px;
 }
 
-.back {
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 20px 0 24px;
+}
+
+.feature {
+  font-size: 12px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: var(--bg-hover);
+}
+
+.enter-btn {
   display: inline-block;
-  margin-top: 24px;
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition:
+    background var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.enter-btn:hover {
+  background: var(--accent-bright);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.back {
+  display: block;
+  margin-top: 20px;
   font-size: 14px;
 }
 </style>

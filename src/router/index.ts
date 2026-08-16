@@ -44,7 +44,7 @@ export function setupRouter() {
           path: `departments/${d.slug}`,
           name: `dept-${d.slug}`,
           component: () => import('@/views/DeptPlaceholderView.vue'),
-          props: { slug: d.slug },
+          props: true, // 从 route.params.slug 注入（SSR 预渲染兼容）
           meta: { title: `${d.name} · CyberSWAT` },
         })),
         {
