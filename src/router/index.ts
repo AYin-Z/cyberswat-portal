@@ -28,6 +28,12 @@ export function setupRouter() {
           meta: { title: '荣誉墙 · CyberSWAT' },
         },
         {
+          path: 'members',
+          name: 'members',
+          component: () => import('@/views/MembersView.vue'),
+          meta: { title: '成员风采 · CyberSWAT' },
+        },
+        {
           path: 'departments',
           name: 'departments',
           component: () => import('@/views/DepartmentsView.vue'),

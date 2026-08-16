@@ -18,6 +18,7 @@ const nav = [
   { to: '/', label: '首页' },
   { to: '/about', label: '社团介绍' },
   { to: '/honors', label: '荣誉墙' },
+  { to: '/members', label: '成员风采' },
   { to: '/departments', label: '部门' },
 ]
 </script>
