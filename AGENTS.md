@@ -73,7 +73,7 @@
 - src/data/team.ts — 结构化数据：departments（8部门）/ awards（2023-2025 荣誉墙）/ friendLinks
 
 ## 待办
-- [ ] LOGO 替换 ⬡ 占位符（等师兄给图）
+- [x] LOGO（2026-08-06 队徽已接入 Header/Hero/Footer/favicon；2026-08-16 清除全部 ⬡ 占位符，原则卡片/建设中卡片升级为语义化 SVG 图标）
 - [ ] 开发部子站：换生产 JWT_SECRET/DB 密码（GitHub OAuth 已配置完成 2026-08-15，见 cyberswat-dev-portal AGENTS.md）
 - [ ] 部门子站 PRD 收集 → 逐个上线（端口 8093-8099 仍预留；开发部已用 8092）
 - [x] 资讯频道（2026-08-15 上线：docs 提取 7 条初始资讯 + 首页最新动态位；公众号自动同步待后续）

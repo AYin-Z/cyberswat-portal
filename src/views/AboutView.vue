@@ -34,17 +34,17 @@ const timeline = [
 
 const principles = [
   {
-    icon: '⬢',
+    icon: 'shield',
     title: '政治建警',
     desc: '以习近平新时代中国特色社会主义思想为主导，贯彻学校"五育并举"决策部署。',
   },
   {
-    icon: '⬡',
+    icon: 'chip',
     title: '科技兴警',
     desc: '努力学习钻研网络安全技术，出征全国各大网络安全、算法、建模、大数据赛事。',
   },
   {
-    icon: '◈',
+    icon: 'grid',
     title: '实战化平台',
     desc: '理论与实战融合、教学与竞赛并重，致力于网络安全交流研究。',
   },
@@ -84,7 +84,23 @@ const principles = [
       <div class="container">
         <div class="principle-grid">
           <div v-for="p in principles" :key="p.title" class="principle-card" v-reveal>
-            <span class="p-icon">{{ p.icon }}</span>
+            <span class="p-icon">
+              <svg v-if="p.icon === 'shield'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              <svg v-else-if="p.icon === 'chip'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="6" y="6" width="12" height="12" rx="2" />
+                <rect x="10" y="10" width="4" height="4" />
+                <path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" />
+              </svg>
+              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+            </span>
             <h3>{{ p.title }}</h3>
             <p>{{ p.desc }}</p>
           </div>

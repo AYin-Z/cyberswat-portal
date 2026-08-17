@@ -46,7 +46,12 @@ const live = computed(() => liveSubsites.find((s) => s.slug === props.slug))
     <!-- 子站建设中：占位 -->
     <section v-else class="notice container" v-reveal>
       <div class="card">
-        <span class="icon">⬡</span>
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" />
+            <circle cx="12" cy="12" r="3.5" />
+          </svg>
+        </span>
         <h2>部门子站建设中</h2>
         <p>
           本站将独立部署于 <code>{{ subdomain }}</code>，由{{ dept?.name ?? '本部门' }}自主设计。
