@@ -60,7 +60,7 @@
    - ⚠️ .cn 域名注册商不能转 CF Registrar（CF 不支持 .cn），DNS 托管可转——已实现
 2. **Tunnel ingress**：cyberswat.cn → http://localhost:8091（PUT API，保留全部 26 条旧路由 + 404 catch-all）
 3. **DNS CNAME**：cyberswat.cn → 2615b5fa-3500-4921-97ba-19d602660cda.cfargotunnel.com（proxied=true）
-4. **Docker 部署**：cyberswat-main 容器，--restart unless-stopped，仅绑 127.0.0.1
+4. **Docker 部署**：cyberswat-main 容器，--restart unless-stopped，仅绑 127.0.0.1（现由 deploy.sh → `docker compose up -d --build` 统一编排）
 5. **验证**：https://cyberswat.cn HTTP 200 / SSL 证书 Google Trust Services / /honors SPA 回退 200
 
 ## 部署记录（2026-08-15 开发部子站 dev.cyberswat.cn 上线）
