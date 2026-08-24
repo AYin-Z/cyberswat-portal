@@ -23,6 +23,8 @@ rm -f dist/.html
 rm -rf dist/.vite
 
 echo "==> 4/4 镜像与容器 (docker compose)"
+# 清理 docker run 时代遗留容器（无 compose label，同名冲突；compose 管理后此步为 no-op）
+docker rm -f cyberswat-main >/dev/null 2>&1 || true
 docker compose up -d --build --remove-orphans
 docker compose ps
 
