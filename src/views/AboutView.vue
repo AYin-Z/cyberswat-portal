@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { vReveal } from '@/directives/reveal'
-import { usePageTitle } from '@/composables/usePageTitle'
-usePageTitle('社团介绍')
-
+import { vReveal } from '@/directives/reveal';
+import { usePageTitle } from '@/composables/usePageTitle';
+usePageTitle('社团介绍');
 
 const timeline = [
   {
@@ -30,7 +29,7 @@ const timeline = [
     title: '国际舞台',
     desc: 'WMCTF 2025 全球第三；全年国家级奖项 12 项、省部级 20+ 项。',
   },
-]
+];
 
 const principles = [
   {
@@ -48,7 +47,7 @@ const principles = [
     title: '实战化平台',
     desc: '理论与实战融合、教学与竞赛并重，致力于网络安全交流研究。',
   },
-]
+];
 </script>
 
 <template>
@@ -64,9 +63,8 @@ const principles = [
     <section class="intro container">
       <div class="intro-text" v-reveal>
         <p>
-          网络特警队（简称「网特」）成立于 <strong>2022 年 4 月</strong>，
-          前身为 2014 年成立的院级社团。队伍由
-          <strong>校团委指导</strong>，由学院指导老师带队。
+          网络特警队（简称「网特」）成立于 <strong>2022 年 4 月</strong>， 前身为 2014
+          年成立的院级社团。队伍由 <strong>校团委指导</strong>，由学院指导老师带队。
         </p>
         <p>
           网特不仅是校园内的技术社团，更是面向网络安全实战的平台。队伍下设攻防、
@@ -74,8 +72,8 @@ const principles = [
           围绕「政治建警、科技兴警」，坚持「理论与实战融合、教学与竞赛并重」。
         </p>
         <p>
-          2025 年，网特队员拿下国家级奖项 12 项、省部级及行业奖项 20 余项：
-          WMCTF 2025 全球第三，盘古石杯国际电子数据取证大赛总冠军，全国大学生信息安全竞赛一等奖。
+          2025 年，网特队员拿下国家级奖项 12 项、省部级及行业奖项 20 余项： WMCTF 2025
+          全球第三，盘古石杯国际电子数据取证大赛总冠军，全国大学生信息安全竞赛一等奖。
         </p>
       </div>
     </section>
@@ -85,16 +83,43 @@ const principles = [
         <div class="principle-grid">
           <div v-for="p in principles" :key="p.title" class="principle-card" v-reveal>
             <span class="p-icon">
-              <svg v-if="p.icon === 'shield'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg
+                v-if="p.icon === 'shield'"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3z" />
                 <path d="m9 12 2 2 4-4" />
               </svg>
-              <svg v-else-if="p.icon === 'chip'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg
+                v-else-if="p.icon === 'chip'"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
                 <rect x="6" y="6" width="12" height="12" rx="2" />
                 <rect x="10" y="10" width="4" height="4" />
                 <path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" />
               </svg>
-              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
                 <rect x="3" y="3" width="7" height="7" rx="1" />
                 <rect x="14" y="3" width="7" height="7" rx="1" />
                 <rect x="3" y="14" width="7" height="7" rx="1" />

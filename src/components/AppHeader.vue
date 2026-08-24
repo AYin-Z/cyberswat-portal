@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-const scrolled = ref(false)
-const menuOpen = ref(false)
+const scrolled = ref(false);
+const menuOpen = ref(false);
 
 function onScroll() {
-  scrolled.value = window.scrollY > 8
+  scrolled.value = window.scrollY > 8;
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
-})
-onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+});
+onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
 
 const nav = [
   { to: '/', label: '首页' },
@@ -20,7 +20,7 @@ const nav = [
   { to: '/honors', label: '荣誉墙' },
   { to: '/members', label: '成员风采' },
   { to: '/departments', label: '部门' },
-]
+];
 </script>
 
 <template>

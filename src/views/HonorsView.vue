@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { usePageTitle } from '@/composables/usePageTitle'
-usePageTitle('荣誉墙')
+import { computed, ref } from 'vue';
+import { usePageTitle } from '@/composables/usePageTitle';
+usePageTitle('荣誉墙');
 
-import { awards, departments } from '@/data/team'
-import { vReveal } from '@/directives/reveal'
+import { awards, departments } from '@/data/team';
+import { vReveal } from '@/directives/reveal';
 
-const yearFilter = ref<number | 'all'>('all')
-const deptFilter = ref<string>('all')
-const searchQuery = ref('')
-const sortOrder = ref<'desc' | 'asc'>('desc')
+const yearFilter = ref<number | 'all'>('all');
+const deptFilter = ref<string>('all');
+const searchQuery = ref('');
+const sortOrder = ref<'desc' | 'asc'>('desc');
 
-const years = computed(() => [...new Set(awards.map((a) => a.year))].sort((a, b) => b - a))
+const years = computed(() => [...new Set(awards.map((a) => a.year))].sort((a, b) => b - a));
 
 const filtered = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase()
+  const q = searchQuery.value.trim().toLowerCase();
   const list = awards.filter(
     (a) =>
       (yearFilter.value === 'all' || a.year === yearFilter.value) &&
@@ -22,19 +22,19 @@ const filtered = computed(() => {
       (!q ||
         a.event.toLowerCase().includes(q) ||
         a.result.toLowerCase().includes(q) ||
-        deptName(a.dept).toLowerCase().includes(q))
-  )
-  return list.sort((a, b) => (sortOrder.value === 'desc' ? b.year - a.year : a.year - b.year))
-})
+        deptName(a.dept).toLowerCase().includes(q)),
+  );
+  return list.sort((a, b) => (sortOrder.value === 'desc' ? b.year - a.year : a.year - b.year));
+});
 
-const deptName = (slug: string) => departments.find((d) => d.slug === slug)?.name ?? slug
+const deptName = (slug: string) => departments.find((d) => d.slug === slug)?.name ?? slug;
 
 const levelLabel: Record<string, string> = {
   international: '国际',
   national: '国家级',
   provincial: '省部级',
   industry: '行业',
-}
+};
 </script>
 
 <template>

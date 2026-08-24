@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import MainLayout from '@/layouts/MainLayout.vue'
-import { departments } from '@/data/team'
+import { createRouter, createWebHistory } from 'vue-router';
+import MainLayout from '@/layouts/MainLayout.vue';
+import { departments } from '@/data/team';
 
 /** 路由配置（vite-ssg 预渲染与运行时共用同一份） */
 export function setupRouter() {
@@ -56,7 +56,7 @@ export function setupRouter() {
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
-  ]
+  ];
 }
 
 /**
@@ -67,10 +67,10 @@ export function createAppRouter() {
   return createRouter({
     history: createWebHistory(),
     scrollBehavior(to, _from, saved) {
-      if (saved) return saved
-      if (to.hash) return { el: to.hash, top: 72 }
-      return { top: 0 }
+      if (saved) return saved;
+      if (to.hash) return { el: to.hash, top: 72 };
+      return { top: 0 };
     },
     routes: setupRouter(),
-  })
+  });
 }

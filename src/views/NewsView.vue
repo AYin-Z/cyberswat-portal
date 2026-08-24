@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { news } from '@/data/news'
-import { vReveal } from '@/directives/reveal'
-import { usePageTitle } from '@/composables/usePageTitle'
-usePageTitle('资讯')
+import { ref } from 'vue';
+import { news } from '@/data/news';
+import { vReveal } from '@/directives/reveal';
+import { usePageTitle } from '@/composables/usePageTitle';
+usePageTitle('资讯');
 
-const expanded = ref<number | null>(null)
+const expanded = ref<number | null>(null);
 
 const categoryColor: Record<string, string> = {
   动态: 'var(--accent-bright)',
   赛事: 'var(--warning)',
   荣誉: 'var(--success)',
-}
+};
 </script>
 
 <template>
@@ -35,7 +35,10 @@ const categoryColor: Record<string, string> = {
         >
           <button class="item-head" @click="expanded = expanded === n.id ? null : n.id">
             <span class="date">{{ n.date }}</span>
-            <span class="cat" :style="{ color: categoryColor[n.category], borderColor: categoryColor[n.category] }">
+            <span
+              class="cat"
+              :style="{ color: categoryColor[n.category], borderColor: categoryColor[n.category] }"
+            >
               {{ n.category }}
             </span>
             <h3>{{ n.title }}</h3>

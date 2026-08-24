@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { departments } from '@/data/team'
-import { liveSubsitesBySlug } from '@/data/sites'
-import { usePageTitle } from '@/composables/usePageTitle'
-usePageTitle('部门')
+import { departments } from '@/data/team';
+import { liveSubsitesBySlug } from '@/data/sites';
+import { usePageTitle } from '@/composables/usePageTitle';
+usePageTitle('部门');
 
-import { vReveal } from '@/directives/reveal'
+import { vReveal } from '@/directives/reveal';
 
 // 部门列表：已上线子站（注册表 sites.ts）在其部门位置原地渲染
-const deptRows = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(d.slug) }))
+const deptRows = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(d.slug) }));
 </script>
 
 <template>
@@ -24,14 +24,7 @@ const deptRows = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(
       <div class="list">
         <template v-for="({ dept: d, sub }, i) in deptRows" :key="d.slug">
           <!-- 已上线子站部门：外链到子站（url 来自 sites.ts 注册表） -->
-          <a
-            v-if="sub"
-            :href="sub.url"
-            target="_blank"
-            rel="noopener"
-            class="row live"
-            v-reveal
-          >
+          <a v-if="sub" :href="sub.url" target="_blank" rel="noopener" class="row live" v-reveal>
             <span class="idx">{{ String(i + 1).padStart(2, '0') }}</span>
             <div class="info">
               <h3>{{ d.name }} <span class="live-tag">LIVE</span></h3>
@@ -40,12 +33,7 @@ const deptRows = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(
             <p class="desc">{{ sub.tagline }}（{{ sub.url.replace('https://', '') }}）</p>
             <span class="arrow">↗</span>
           </a>
-          <RouterLink
-            v-else
-            :to="`/departments/${d.slug}`"
-            class="row"
-            v-reveal
-          >
+          <RouterLink v-else :to="`/departments/${d.slug}`" class="row" v-reveal>
             <span class="idx">{{ String(i + 1).padStart(2, '0') }}</span>
             <div class="info">
               <h3>{{ d.name }}</h3>

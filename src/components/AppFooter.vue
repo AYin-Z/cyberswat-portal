@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { friendLinks } from '@/data/team'
+import { friendLinks } from '@/data/team';
 </script>
 
 <template>
@@ -18,7 +18,14 @@ import { friendLinks } from '@/data/team'
 
       <div class="col">
         <p class="f-title">友情链接</p>
-        <a v-for="f in friendLinks" :key="f.url" :href="f.url" target="_blank" rel="noopener" class="f-link">
+        <a
+          v-for="f in friendLinks"
+          :key="f.url"
+          :href="f.url"
+          target="_blank"
+          rel="noopener"
+          class="f-link"
+        >
           {{ f.name }} ↗
         </a>
       </div>

@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { members } from '@/data/members'
-import { liveSubsitesBySlug } from '@/data/sites'
-import { vReveal } from '@/directives/reveal'
-import { usePageTitle } from '@/composables/usePageTitle'
-usePageTitle('成员风采')
+import { computed } from 'vue';
+import { members } from '@/data/members';
+import { liveSubsitesBySlug } from '@/data/sites';
+import { vReveal } from '@/directives/reveal';
+import { usePageTitle } from '@/composables/usePageTitle';
+usePageTitle('成员风采');
 
 // 已上线子站入口（单一事实源 sites.ts，不在页面里硬编码 URL）
-const devSubsite = liveSubsitesBySlug.get('dev')
+const devSubsite = liveSubsitesBySlug.get('dev');
 
 // 按年级分组（Vidar 模式：高年级 → 低年级）
 const groups = computed(() => {
-  const map = new Map<string, typeof members>()
+  const map = new Map<string, typeof members>();
   for (const m of members) {
-    const arr = map.get(m.grade) ?? []
-    arr.push(m)
-    map.set(m.grade, arr)
+    const arr = map.get(m.grade) ?? [];
+    arr.push(m);
+    map.set(m.grade, arr);
   }
-  return [...map.entries()].sort((a, b) => b[0].localeCompare(a[0]))
-})
+  return [...map.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+});
 
 const deptColor: Record<string, string> = {
   攻防: 'var(--accent-bright)',
@@ -29,7 +29,7 @@ const deptColor: Record<string, string> = {
   开发: 'var(--accent-bright)',
   宣传: 'var(--text-dim)',
   综合: 'var(--text-dim)',
-}
+};
 </script>
 
 <template>
@@ -49,7 +49,13 @@ const deptColor: Record<string, string> = {
           <div v-for="m in list" :key="m.id" class="card">
             <div class="card-top">
               <span class="avatar">{{ (m.handle ?? m.role).slice(0, 1).toUpperCase() }}</span>
-              <span class="dept" :style="{ color: deptColor[m.dept] ?? 'var(--text-dim)', borderColor: deptColor[m.dept] ?? 'var(--border)' }">
+              <span
+                class="dept"
+                :style="{
+                  color: deptColor[m.dept] ?? 'var(--text-dim)',
+                  borderColor: deptColor[m.dept] ?? 'var(--border)',
+                }"
+              >
                 {{ m.dept }}
               </span>
             </div>
@@ -63,7 +69,11 @@ const deptColor: Record<string, string> = {
 
       <p class="footnote">
         名单整理自队伍年度报告与风采展示 · 按公网脱敏口径展示（仅公开标识与职务）<br />
-        <template v-if="devSubsite">更多成员与实时动态见<a :href="devSubsite.url" target="_blank" rel="noopener" class="link">开发部协作平台</a></template>
+        <template v-if="devSubsite"
+          >更多成员与实时动态见<a :href="devSubsite.url" target="_blank" rel="noopener" class="link"
+            >开发部协作平台</a
+          ></template
+        >
       </p>
     </section>
   </div>

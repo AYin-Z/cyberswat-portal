@@ -4,15 +4,15 @@
 
 export interface SubsiteInfo {
   /** 部门 slug（与 src/data/team.ts departments 对齐） */
-  slug: string
+  slug: string;
   /** 子站地址 */
-  url: string
+  url: string;
   /** 一句话定位 */
-  tagline: string
+  tagline: string;
   /** 核心功能（展示用） */
-  features: string[]
+  features: string[];
   /** 上线时间 */
-  launchedAt: string
+  launchedAt: string;
 }
 
 export const liveSubsites: SubsiteInfo[] = [
@@ -23,7 +23,7 @@ export const liveSubsites: SubsiteInfo[] = [
     features: ['公告与已读追踪', '点子墙与项目孵化', '任务闭环', '成员社区', 'AI agent 接入'],
     launchedAt: '2026-08-15',
   },
-]
+];
 
 /** slug → 已上线子站 查询表（视图统一从这里取，禁止在页面里硬编码子站 URL） */
-export const liveSubsitesBySlug = new Map(liveSubsites.map((s) => [s.slug, s]))
+export const liveSubsitesBySlug = new Map(liveSubsites.map((s) => [s.slug, s]));

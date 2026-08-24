@@ -2,12 +2,12 @@
 // 结构：标题/日期/分类/摘要/详情段落（详情为空则仅展示摘要）
 
 export interface NewsItem {
-  id: number
-  title: string
-  date: string // YYYY-MM-DD
-  category: '动态' | '赛事' | '荣誉'
-  summary: string
-  content?: string[]
+  id: number;
+  title: string;
+  date: string; // YYYY-MM-DD
+  category: '动态' | '赛事' | '荣誉';
+  summary: string;
+  content?: string[];
 }
 
 export const news: NewsItem[] = [
@@ -84,4 +84,4 @@ export const news: NewsItem[] = [
       '古剑山全国大学生网络攻防大赛是 2023 年新兴赛事。队伍在首届比赛中表现出色，获得决赛第 2 名，展现了起步阶段的竞争力。',
     ],
   },
-]
+];

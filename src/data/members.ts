@@ -5,19 +5,19 @@
 
 export interface MemberProfile {
   /** 唯一 id（slug） */
-  id: string
+  id: string;
   /** 公开平台 ID（GitHub / 战队 ID，展示用；无则留空） */
-  handle?: string
+  handle?: string;
   /** 年级，如 '2022'（展示为 22级） */
-  grade: string
+  grade: string;
   /** 部门方向 */
-  dept: string
+  dept: string;
   /** 职务/身份 */
-  role: string
+  role: string;
   /** 一句话寄语（公开采访摘录，非必填） */
-  quote?: string
+  quote?: string;
   /** 高光标签（非必填） */
-  highlight?: string
+  highlight?: string;
 }
 
 export const members: MemberProfile[] = [
@@ -188,4 +188,4 @@ export const members: MemberProfile[] = [
     dept: '算法',
     role: '算法 & 建模',
   },
-]
+];

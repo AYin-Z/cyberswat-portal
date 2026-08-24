@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { usePageTitle } from '@/composables/usePageTitle'
-import { departments } from '@/data/team'
-import { liveSubsites } from '@/data/sites'
-import { vReveal } from '@/directives/reveal'
+import { computed } from 'vue';
+import { usePageTitle } from '@/composables/usePageTitle';
+import { departments } from '@/data/team';
+import { liveSubsites } from '@/data/sites';
+import { vReveal } from '@/directives/reveal';
 
-const props = defineProps<{ slug: string }>()
-usePageTitle(departments.find((d) => d.slug === props.slug)?.name ?? '部门')
+const props = defineProps<{ slug: string }>();
+usePageTitle(departments.find((d) => d.slug === props.slug)?.name ?? '部门');
 
-const dept = computed(() => departments.find((d) => d.slug === props.slug))
-const subdomain = computed(() => (props.slug ? `${props.slug}.cyberswat.cn` : ''))
+const dept = computed(() => departments.find((d) => d.slug === props.slug));
+const subdomain = computed(() => (props.slug ? `${props.slug}.cyberswat.cn` : ''));
 // 查子站注册表：已上线 → 展示真实入口；未上线 → 占位
-const live = computed(() => liveSubsites.find((s) => s.slug === props.slug))
+const live = computed(() => liveSubsites.find((s) => s.slug === props.slug));
 </script>
 
 <template>
@@ -47,14 +47,25 @@ const live = computed(() => liveSubsites.find((s) => s.slug === props.slug))
     <section v-else class="notice container" v-reveal>
       <div class="card">
         <span class="icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"
+            />
             <circle cx="12" cy="12" r="3.5" />
           </svg>
         </span>
         <h2>部门子站建设中</h2>
         <p>
-          本站将独立部署于 <code>{{ subdomain }}</code>，由{{ dept?.name ?? '本部门' }}自主设计。
+          本站将独立部署于 <code>{{ subdomain }}</code
+          >，由{{ dept?.name ?? '本部门' }}自主设计。
         </p>
         <p class="dim">如果你是该部门成员，请联系部门负责人提交 PRD。</p>
         <RouterLink to="/departments" class="back">← 返回部门列表</RouterLink>

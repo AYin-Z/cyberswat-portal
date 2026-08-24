@@ -3,10 +3,22 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite-ssg build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "vue-tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"
   },
   "dependencies": {
     "@unhead/vue": "^2.1.17",
@@ -17,10 +29,18 @@
   "devDependencies": {
     "@types/node": "^22.10.0",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "@vue/test-utils": "^2.4.11",
     "beasties": "^0.4.3",
+    "eslint": "^10.9.0",
+    "eslint-plugin-vue": "^10.10.0",
+    "jsdom": "^30.0.1",
+    "prettier": "^3.9.6",
     "typescript": "~5.7.2",
     "vite": "^6.4.3",
     "vite-ssg": "^28.3.0",
+    "vitest": "^4.1.11",
     "vue-tsc": "^2.2.8"
   }
 }

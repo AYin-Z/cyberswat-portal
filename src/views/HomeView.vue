@@ -1,26 +1,24 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { usePageTitle } from '@/composables/usePageTitle'
-usePageTitle('网络特警队')
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { usePageTitle } from '@/composables/usePageTitle';
+usePageTitle('网络特警队');
 
-import { departments, awards, awardCounts } from '@/data/team'
-import { news } from '@/data/news'
-import { liveSubsitesBySlug } from '@/data/sites'
-import { vReveal } from '@/directives/reveal'
+import { departments, awards, awardCounts } from '@/data/team';
+import { news } from '@/data/news';
+import { liveSubsitesBySlug } from '@/data/sites';
+import { vReveal } from '@/directives/reveal';
 
 // 首页展示荣誉精选：国际 + 国家级
 const featuredAwards = computed(() =>
-  awards
-    .filter((a) => a.level === 'international' || a.level === 'national')
-    .slice(0, 8)
-)
+  awards.filter((a) => a.level === 'international' || a.level === 'national').slice(0, 8),
+);
 
 // 首页最新动态：最近 3 条资讯
-const latestNews = computed(() => news.slice(0, 3))
+const latestNews = computed(() => news.slice(0, 3));
 
 // 已上线子站注册表（单一事实源 src/data/sites.ts）——主站→子站入口
 // 部门卡片：子站部门在其顺序位置原地渲染（sub 可能为 undefined → 走占位路由）
-const deptCards = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(d.slug) }))
+const deptCards = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(d.slug) }));
 
 // 部门状态（SOC 面板用；后续接后端数据源）
 const deptStatus: Record<string, 'ACTIVE' | 'IDLE' | 'STANDBY'> = {
@@ -32,7 +30,7 @@ const deptStatus: Record<string, 'ACTIVE' | 'IDLE' | 'STANDBY'> = {
   dev: 'ACTIVE',
   ai: 'ACTIVE',
   pr: 'ACTIVE',
-}
+};
 
 // 部门 meta 展示（等宽字体标签，简短）
 const deptMeta: Record<string, string> = {
@@ -44,7 +42,7 @@ const deptMeta: Record<string, string> = {
   dev: '平台工程化',
   ai: '警务场景 AI',
   pr: '品牌 · 内容',
-}
+};
 
 // 统计指标由数据派生（单一事实源：awards/departments），避免手工数字与荣誉墙漂移
 const stats = [
@@ -52,24 +50,24 @@ const stats = [
   { num: awardCounts.provincial, suffix: '项', label: '省部级奖项', key: 'provincial' },
   { num: departments.length, suffix: '个', label: '作战部门', key: 'depts' },
   { num: 3, suffix: 'rd', label: 'WMCTF 2025 全球', key: 'wmctf' },
-]
+];
 
 // —— 数字滚动 ——
-const statRefs = ref<(HTMLDivElement | null)[]>([])
-const displayed = ref(stats.map(() => 0))
-let observer: IntersectionObserver | null = null
-let raf = 0
+const statRefs = ref<(HTMLDivElement | null)[]>([]);
+const displayed = ref(stats.map(() => 0));
+let observer: IntersectionObserver | null = null;
+let raf = 0;
 
 function animateCount(index: number, target: number) {
-  const duration = 1200
-  const start = performance.now()
+  const duration = 1200;
+  const start = performance.now();
   const tick = (now: number) => {
-    const p = Math.min((now - start) / duration, 1)
-    const eased = 1 - Math.pow(1 - p, 3)
-    displayed.value[index] = Math.round(target * eased)
-    if (p < 1) raf = requestAnimationFrame(tick)
-  }
-  raf = requestAnimationFrame(tick)
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    displayed.value[index] = Math.round(target * eased);
+    if (p < 1) raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
 }
 
 onMounted(() => {
@@ -77,35 +75,35 @@ onMounted(() => {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const idx = Number((entry.target as HTMLElement).dataset.idx)
-          if (!Number.isNaN(idx)) animateCount(idx, stats[idx].num)
-          observer?.unobserve(entry.target)
+          const idx = Number((entry.target as HTMLElement).dataset.idx);
+          if (!Number.isNaN(idx)) animateCount(idx, stats[idx].num);
+          observer?.unobserve(entry.target);
         }
-      })
+      });
     },
-    { threshold: 0.4 }
-  )
-  statRefs.value.forEach((el) => el && observer?.observe(el))
-})
+    { threshold: 0.4 },
+  );
+  statRefs.value.forEach((el) => el && observer?.observe(el));
+});
 
 onUnmounted(() => {
-  observer?.disconnect()
-  cancelAnimationFrame(raf)
-})
+  observer?.disconnect();
+  cancelAnimationFrame(raf);
+});
 
 // 顶部状态条时间
-const now = ref('')
-let timer = 0
+const now = ref('');
+let timer = 0;
 function tickTime() {
-  const d = new Date()
-  const p = (n: number) => String(n).padStart(2, '0')
-  now.value = `[ ${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ]`
+  const d = new Date();
+  const p = (n: number) => String(n).padStart(2, '0');
+  now.value = `[ ${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} ]`;
 }
 onMounted(() => {
-  tickTime()
-  timer = window.setInterval(tickTime, 1000)
-})
-onUnmounted(() => clearInterval(timer))
+  tickTime();
+  timer = window.setInterval(tickTime, 1000);
+});
+onUnmounted(() => clearInterval(timer));
 </script>
 
 <template>
@@ -153,7 +151,9 @@ onUnmounted(() => clearInterval(timer))
               :ref="(el) => (statRefs[i] = el as HTMLDivElement | null)"
               :data-idx="i"
             >
-              <div class="num">{{ displayed[i] }}<small>{{ s.suffix }}</small></div>
+              <div class="num">
+                {{ displayed[i] }}<small>{{ s.suffix }}</small>
+              </div>
               <div class="label">{{ s.label }}</div>
             </div>
           </div>
@@ -168,13 +168,7 @@ onUnmounted(() => clearInterval(timer))
         <div class="dept-grid" v-reveal>
           <template v-for="({ dept: d, sub }, i) in deptCards" :key="d.slug">
             <!-- 已上线子站部门：外链到子站（url 来自 sites.ts 注册表） -->
-            <a
-              v-if="sub"
-              :href="sub.url"
-              target="_blank"
-              rel="noopener"
-              class="dept live"
-            >
+            <a v-if="sub" :href="sub.url" target="_blank" rel="noopener" class="dept live">
               <div class="idx">{{ String(i + 1).padStart(2, '0') }}</div>
               <div class="name">{{ d.name }}</div>
               <div class="en">{{ d.en }}</div>
@@ -186,11 +180,7 @@ onUnmounted(() => clearInterval(timer))
                 </span>
               </div>
             </a>
-            <RouterLink
-              v-else
-              :to="`/departments/${d.slug}`"
-              class="dept"
-            >
+            <RouterLink v-else :to="`/departments/${d.slug}`" class="dept">
               <div class="idx">{{ String(i + 1).padStart(2, '0') }}</div>
               <div class="name">{{ d.name }}</div>
               <div class="en">{{ d.en }}</div>
@@ -232,13 +222,7 @@ onUnmounted(() => clearInterval(timer))
           <RouterLink to="/news" class="section-more">全部资讯 →</RouterLink>
         </div>
         <div class="update-list">
-          <RouterLink
-            v-for="n in latestNews"
-            :key="n.id"
-            to="/news"
-            class="update-item"
-            v-reveal
-          >
+          <RouterLink v-for="n in latestNews" :key="n.id" to="/news" class="update-item" v-reveal>
             <span class="update-date">{{ n.date }}</span>
             <span class="update-cat">{{ n.category }}</span>
             <span class="update-title">{{ n.title }}</span>
