@@ -14,7 +14,7 @@
 - 设计语言：深色科技风（0d1117 底 + 语义色），与 ayin-portal 设计 token 一致，后续可差异化
 - 部署：Docker 容器化（cyberswat-main:latest，nginx:alpine，127.0.0.1:8091）→ CF Tunnel → cyberswat.cn
 - 友情链接：0psu3.team（CTF 部门战队 Opsu3）
-- 端口约定：dev 5174（本地）/ 容器 8091（生产）
+- 端口约定：完整注册表见 **docs/INFRA.md**（主站本地 dev 5174 / 容器 8091；子站 8092-8094 已占用，8095-8099 预留）
 - **Git 双仓库（2026-08-07）**：origin 双 push —— 个人仓 AYin-Z/cyberswat-portal（主源）+ 组织仓 PPSUC-CyberSWAT/cyberswat-portal（同步）。fetch 只从个人仓。`git push origin main` 自动双推。仓库级 http.proxy=127.0.0.1:7890（github 直连 TLS 被重置）
 
 ## 架构设想（2026-08-06 用户口述）
@@ -22,7 +22,7 @@
 - **主站 cyberswat.cn**：资讯 + 往期风采 + 社团介绍（主页聚合）——✅ 已上线
 - **部门子域名**：每个部门独立子站（如 attack.cyberswat.cn），各部门自己提 PRD，我们实现
   - 部门 slug 已定短英文：attack/forensics/modeling/algorithm/bigdata/dev/ai/pr
-  - 子站路由占位已实现（/departments/:slug），子站独立容器端口 8092-8099 预留
+  - 子站路由占位已实现（/departments/:slug），子站独立容器端口见 docs/INFRA.md（8095-8099 预留）
   - ✅ dev.cyberswat.cn 已上线（2026-08-15，开发部子站，端口 8092），作为子站体系样板
   - 子站上线流程：docker-compose 加服务 → tunnel ingress 加 hostname（CF API PUT）→ DNS CNAME（脚本已跑通）
 
@@ -41,9 +41,17 @@
 
 ## 环境
 
-- Node v24.11.1 / pnpm 11.17.0
+- Node v24.11.1 / pnpm 11.17.0（package.json 已锁 packageManager/engines）
 - pnpm 11 配置：`onlyBuiltDependencies` 必须在 **pnpm-workspace.yaml**（package.json 的 pnpm 字段已被忽略）
 - esbuild 是 vite 传递依赖，顶层无 .bin 链接属正常，vite 内部调用正常
+
+## 工程化基线（改动前必读）
+
+- **验证门禁**：提交前 `pnpm check` 全绿（lint + typecheck + test + build）；GitHub Actions 同款门禁（.github/workflows/ci.yml）
+- **工具链**：ESLint flat（vue+ts 推荐集，`no-explicit-any` 为 error）/ Prettier（.prettierrc.json；docs/ public/ pnpm-lock 已忽略）/ Vitest（src/**/*.test.ts，含数据一致性门禁）
+- **数据单一事实源**：部门+荣誉 `src/data/team.ts`（首页统计由 awardCounts 派生，禁止手工数字）· 成员 `src/data/members.ts` · 资讯 `src/data/news.ts` · **子站注册表 `src/data/sites.ts`**（页面一律走 liveSubsitesBySlug，禁止硬编码子站 URL）
+- **文档单一事实源**：端口/域名/容器 → docs/INFRA.md；本文件只记身份/决策/环境/坑/待办
+- **协作**：提交规范/分支/门禁见 CONTRIBUTING.md；通用规则见 project-standards/ 三件套
 
 ## 部署记录（2026-08-06 完成）
 
@@ -84,7 +92,7 @@
 ## 待办
 
 - [x] LOGO（2026-08-06 队徽已接入 Header/Hero/Footer/favicon；2026-08-16 清除全部 ⬡ 占位符，原则卡片/建设中卡片升级为语义化 SVG 图标）
-- [ ] 开发部子站：换生产 JWT_SECRET/DB 密码（GitHub OAuth 已配置完成 2026-08-15，见 cyberswat-dev-portal AGENTS.md）
-- [ ] 部门子站 PRD 收集 → 逐个上线（端口 8093-8099 仍预留；开发部已用 8092）
+- [ ] 开发部子站：生产 DB 密码已轮换强随机（~/.cyberswat-dev-prod.env）；**JWT_SECRET 仍仅存运行容器 env** → 补持久化 + 轮换 SOP（GitHub OAuth 已配置完成 2026-08-15）
+- [ ] 部门子站 PRD 收集 → 逐个上线（端口按 docs/INFRA.md 分配；上线流程见该文"上线流程"节）
 - [x] 资讯频道（2026-08-15 上线：docs 提取 7 条初始资讯 + 首页最新动态位；公众号自动同步待后续）
 - [x] 成员风采页（2026-08-15 上线：/members 年级分组卡片墙，增量数据接口 src/data/members.ts，脱敏口径）
