@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { departments } from '@/data/team'
+import { liveSubsitesBySlug } from '@/data/sites'
 import { usePageTitle } from '@/composables/usePageTitle'
 usePageTitle('部门')
 
 import { vReveal } from '@/directives/reveal'
+
+// 部门列表：已上线子站（注册表 sites.ts）在其部门位置原地渲染
+const deptRows = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(d.slug) }))
 </script>
 
 <template>
@@ -18,37 +22,39 @@ import { vReveal } from '@/directives/reveal'
 
     <section class="content container">
       <div class="list">
-        <RouterLink
-          v-for="(d, i) in departments.filter((x) => x.slug !== 'dev')"
-          :key="d.slug"
-          :to="`/departments/${d.slug}`"
-          class="row"
-          v-reveal
-        >
-          <span class="idx">{{ String(i + 1).padStart(2, '0') }}</span>
-          <div class="info">
-            <h3>{{ d.name }}</h3>
-            <p class="en">{{ d.en }}</p>
-          </div>
-          <p class="desc">{{ d.desc }}</p>
-          <span class="arrow">→</span>
-        </RouterLink>
-        <!-- 开发部：子站已上线，外链 -->
-        <a
-          href="https://dev.cyberswat.cn"
-          target="_blank"
-          rel="noopener"
-          class="row live"
-          v-reveal
-        >
-          <span class="idx">04</span>
-          <div class="info">
-            <h3>开发部 <span class="live-tag">LIVE</span></h3>
-            <p class="en">Development</p>
-          </div>
-          <p class="desc">协作平台已上线 —— 公告 / 点子墙 / 项目任务 / 社区（dev.cyberswat.cn）</p>
-          <span class="arrow">↗</span>
-        </a>
+        <template v-for="({ dept: d, sub }, i) in deptRows" :key="d.slug">
+          <!-- 已上线子站部门：外链到子站（url 来自 sites.ts 注册表） -->
+          <a
+            v-if="sub"
+            :href="sub.url"
+            target="_blank"
+            rel="noopener"
+            class="row live"
+            v-reveal
+          >
+            <span class="idx">{{ String(i + 1).padStart(2, '0') }}</span>
+            <div class="info">
+              <h3>{{ d.name }} <span class="live-tag">LIVE</span></h3>
+              <p class="en">{{ d.en }}</p>
+            </div>
+            <p class="desc">{{ sub.tagline }}（{{ sub.url.replace('https://', '') }}）</p>
+            <span class="arrow">↗</span>
+          </a>
+          <RouterLink
+            v-else
+            :to="`/departments/${d.slug}`"
+            class="row"
+            v-reveal
+          >
+            <span class="idx">{{ String(i + 1).padStart(2, '0') }}</span>
+            <div class="info">
+              <h3>{{ d.name }}</h3>
+              <p class="en">{{ d.en }}</p>
+            </div>
+            <p class="desc">{{ d.desc }}</p>
+            <span class="arrow">→</span>
+          </RouterLink>
+        </template>
       </div>
     </section>
   </div>

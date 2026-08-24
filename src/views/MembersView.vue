@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { members } from '@/data/members'
+import { liveSubsitesBySlug } from '@/data/sites'
 import { vReveal } from '@/directives/reveal'
 import { usePageTitle } from '@/composables/usePageTitle'
 usePageTitle('成员风采')
+
+// 已上线子站入口（单一事实源 sites.ts，不在页面里硬编码 URL）
+const devSubsite = liveSubsitesBySlug.get('dev')
 
 // 按年级分组（Vidar 模式：高年级 → 低年级）
 const groups = computed(() => {
@@ -59,7 +63,7 @@ const deptColor: Record<string, string> = {
 
       <p class="footnote">
         名单整理自队伍年度报告与风采展示 · 按公网脱敏口径展示（仅公开标识与职务）<br />
-        更多成员与实时动态见<a href="https://dev.cyberswat.cn" target="_blank" rel="noopener" class="link">开发部协作平台</a>
+        <template v-if="devSubsite">更多成员与实时动态见<a :href="devSubsite.url" target="_blank" rel="noopener" class="link">开发部协作平台</a></template>
       </p>
     </section>
   </div>

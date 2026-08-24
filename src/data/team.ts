@@ -117,6 +117,14 @@ export const awards: Award[] = [
   { id: 38, dept: 'bigdata', event: '第七届"智警杯"大数据技能竞赛', result: '多个学生组一等奖、二等奖', level: 'industry', year: 2025 },
 ]
 
+// 荣誉墙统计（单一事实源：由 awards 派生，供首页指标/统计卡片使用，禁止手工维护数字）
+export const awardCounts = {
+  international: awards.filter((a) => a.level === 'international').length,
+  national: awards.filter((a) => a.level === 'national').length,
+  provincial: awards.filter((a) => a.level === 'provincial').length,
+  industry: awards.filter((a) => a.level === 'industry').length,
+}
+
 // 友情链接
 export const friendLinks = [
   {

@@ -3,8 +3,9 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { usePageTitle } from '@/composables/usePageTitle'
 usePageTitle('网络特警队')
 
-import { departments, awards } from '@/data/team'
+import { departments, awards, awardCounts } from '@/data/team'
 import { news } from '@/data/news'
+import { liveSubsitesBySlug } from '@/data/sites'
 import { vReveal } from '@/directives/reveal'
 
 // 首页展示荣誉精选：国际 + 国家级
@@ -17,8 +18,9 @@ const featuredAwards = computed(() =>
 // 首页最新动态：最近 3 条资讯
 const latestNews = computed(() => news.slice(0, 3))
 
-// 开发部协作平台（已上线子站）——主站→子站入口
-const devSite = { url: 'https://dev.cyberswat.cn' }
+// 已上线子站注册表（单一事实源 src/data/sites.ts）——主站→子站入口
+// 部门卡片：子站部门在其顺序位置原地渲染（sub 可能为 undefined → 走占位路由）
+const deptCards = departments.map((d) => ({ dept: d, sub: liveSubsitesBySlug.get(d.slug) }))
 
 // 部门状态（SOC 面板用；后续接后端数据源）
 const deptStatus: Record<string, 'ACTIVE' | 'IDLE' | 'STANDBY'> = {
@@ -44,10 +46,11 @@ const deptMeta: Record<string, string> = {
   pr: '品牌 · 内容',
 }
 
+// 统计指标由数据派生（单一事实源：awards/departments），避免手工数字与荣誉墙漂移
 const stats = [
-  { num: 12, suffix: '项', label: '国家级奖项', key: 'national' },
-  { num: 20, suffix: '+', label: '省部级奖项', key: 'provincial' },
-  { num: 8, suffix: '个', label: '作战部门', key: 'depts' },
+  { num: awardCounts.national, suffix: '项', label: '国家级奖项', key: 'national' },
+  { num: awardCounts.provincial, suffix: '项', label: '省部级奖项', key: 'provincial' },
+  { num: departments.length, suffix: '个', label: '作战部门', key: 'depts' },
   { num: 3, suffix: 'rd', label: 'WMCTF 2025 全球', key: 'wmctf' },
 ]
 
@@ -163,42 +166,43 @@ onUnmounted(() => clearInterval(timer))
       <div class="container">
         <div class="section-label" v-reveal>DEPARTMENTS // 八大部门</div>
         <div class="dept-grid" v-reveal>
-          <!-- 部门卡片：dev 部门外链到已上线的协作平台子站 -->
-          <a
-            v-if="devSite"
-            :href="devSite.url"
-            target="_blank"
-            rel="noopener"
-            class="dept live"
-          >
-            <div class="idx">04</div>
-            <div class="name">开发部</div>
-            <div class="en">Development</div>
-            <div class="meta">
-              <span>协作平台已上线</span>
-              <span class="status">
-                <span class="dot live-dot"></span>
-                LIVE
-              </span>
-            </div>
-          </a>
-          <RouterLink
-            v-for="(d, i) in departments.filter((x) => x.slug !== 'dev')"
-            :key="d.slug"
-            :to="`/departments/${d.slug}`"
-            class="dept"
-          >
-            <div class="idx">{{ String(i + 1).padStart(2, '0') }}</div>
-            <div class="name">{{ d.name }}</div>
-            <div class="en">{{ d.en }}</div>
-            <div class="meta">
-              <span>{{ deptMeta[d.slug] }}</span>
-              <span class="status">
-                <span class="dot" :class="{ warn: deptStatus[d.slug] !== 'ACTIVE' }"></span>
-                {{ deptStatus[d.slug] }}
-              </span>
-            </div>
-          </RouterLink>
+          <template v-for="({ dept: d, sub }, i) in deptCards" :key="d.slug">
+            <!-- 已上线子站部门：外链到子站（url 来自 sites.ts 注册表） -->
+            <a
+              v-if="sub"
+              :href="sub.url"
+              target="_blank"
+              rel="noopener"
+              class="dept live"
+            >
+              <div class="idx">{{ String(i + 1).padStart(2, '0') }}</div>
+              <div class="name">{{ d.name }}</div>
+              <div class="en">{{ d.en }}</div>
+              <div class="meta">
+                <span>协作平台已上线</span>
+                <span class="status">
+                  <span class="dot live-dot"></span>
+                  LIVE
+                </span>
+              </div>
+            </a>
+            <RouterLink
+              v-else
+              :to="`/departments/${d.slug}`"
+              class="dept"
+            >
+              <div class="idx">{{ String(i + 1).padStart(2, '0') }}</div>
+              <div class="name">{{ d.name }}</div>
+              <div class="en">{{ d.en }}</div>
+              <div class="meta">
+                <span>{{ deptMeta[d.slug] }}</span>
+                <span class="status">
+                  <span class="dot" :class="{ warn: deptStatus[d.slug] !== 'ACTIVE' }"></span>
+                  {{ deptStatus[d.slug] }}
+                </span>
+              </div>
+            </RouterLink>
+          </template>
         </div>
       </div>
     </section>

@@ -24,3 +24,6 @@ export const liveSubsites: SubsiteInfo[] = [
     launchedAt: '2026-08-15',
   },
 ]
+
+/** slug → 已上线子站 查询表（视图统一从这里取，禁止在页面里硬编码子站 URL） */
+export const liveSubsitesBySlug = new Map(liveSubsites.map((s) => [s.slug, s]))
